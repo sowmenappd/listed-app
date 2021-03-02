@@ -10,9 +10,9 @@ const RightScreen = () => {
       <div
         style={{
           paddingTop: 150,
+          alignSelf: "center",
           paddingLeft: 20,
           paddingRight: 20,
-          height: "100%",
           // overflowY: "hidden",
         }}
       >

@@ -10,12 +10,13 @@ const MainScreen = () => {
       <Row
         style={{
           height: "100vh",
+          overflowY: "hidden",
         }}
       >
-        <Col style={{ backgroundColor: "#191716" }} span={8}>
+        <Col style={{ backgroundColor: "#191716" }} span={6}>
           <LeftScreen />
         </Col>
-        <Col style={{ backgroundColor: "#fafaff" }} span={16}>
+        <Col style={{ backgroundColor: "#fafaff" }} span={18}>
           <RightScreen />
         </Col>
       </Row>

@@ -1,88 +1,29 @@
 import React, { useState } from "react";
-import { Col, Divider, Row, Typography } from "antd";
+import { Col, Divider, List, Row, Typography } from "antd";
 
 import Todo from "./Todo";
+import todos from "../TestData/todos";
 
 const { Title } = Typography;
 
 const Todos = () => {
-  const [todos, setTodos] = useState([
-    {
-      title: "Test task",
-      tasks: ["Buy milk", "Make tea"],
-    },
-    {
-      title: "Test task 2",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task",
-      tasks: ["Buy milk", "Make tea"],
-    },
-    {
-      title: "Test task 2",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task",
-      tasks: ["Buy milk", "Make tea"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task",
-      tasks: ["Buy milk", "Make tea"],
-    },
-    {
-      title: "Test task 2",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task 3",
-      tasks: ["Buy paper", "Write letter to Mom"],
-    },
-    {
-      title: "Test task",
-      tasks: ["Buy milk", "Make tea"],
-    },
-  ]);
+  const [todos_, setTodos] = useState(todos);
 
   return (
-    <div>
+    <div style={{ height: "100%", width: "100%" }}>
       <Row>
         <Col span={24}>
-          <div style={{ marginBottom: 30, marginLeft: 30 }}>
+          <div
+            style={{
+              marginBottom: 30,
+              marginLeft: 40,
+              width: "100%",
+            }}
+          >
             <Divider>
               <Title
                 style={{
                   fontWeight: "lighter",
-                  lineHeight: 0,
                   marginBottom: 10,
                 }}
               >
@@ -92,25 +33,35 @@ const Todos = () => {
           </div>
         </Col>
       </Row>
-      <div
-        style={{
-          marginLeft: 30,
-          height: "700px",
-          overflowY: "auto",
-        }}
-      >
+      <Row>
         {todos.length && (
-          <Row>
-            {todos.map((todo, i) => (
-              <Col key={i} xs={24} sm={24} md={12} lg={12} xl={8}>
-                <div style={{ margin: 2 }}>
-                  <Todo todo={todo} />
-                </div>
-              </Col>
-            ))}
-          </Row>
+          <List
+            style={{
+              overflowX: "hidden",
+              overflowY: "clip",
+              width: "100%",
+              height: "70vh",
+              flex: 1,
+              marginLeft: 40,
+            }}
+            grid={{
+              gutter: 16,
+              xs: 1,
+              sm: 1,
+              md: 2,
+              lg: 2,
+              xl: 3,
+              xxl: 3,
+            }}
+            dataSource={todos_}
+            renderItem={(todo) => (
+              <List.Item>
+                <Todo todo={todo} />
+              </List.Item>
+            )}
+          />
         )}
-      </div>
+      </Row>
     </div>
   );
 };
