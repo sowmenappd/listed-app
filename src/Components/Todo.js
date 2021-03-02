@@ -31,12 +31,12 @@ const Todo = ({ todo }) => {
           <Meta
             title={title || "Untitled todo"}
             description={tasks.map((task, i) => (
-              <>
-                <Text key={i}>
+              <div key={i}>
+                <Text>
                   {i + 1}. {task}
                 </Text>
                 <br />
-              </>
+              </div>
             ))}
           />
         </Skeleton>

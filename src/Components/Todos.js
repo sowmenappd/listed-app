@@ -101,8 +101,8 @@ const Todos = () => {
       >
         {todos.length && (
           <Row>
-            {todos.map((todo) => (
-              <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+            {todos.map((todo, i) => (
+              <Col key={i} xs={24} sm={24} md={12} lg={12} xl={8}>
                 <div style={{ margin: 2 }}>
                   <Todo todo={todo} />
                 </div>
