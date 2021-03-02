@@ -3,6 +3,7 @@ import { Col, Row } from "antd";
 
 import SearchBar from "../Components/SearchBar";
 import TodoCollectionNav from "../Components/TodoCollectionNav";
+import AddTodoNav from "../Components/AddTodoNav";
 
 import _collections from "../TestData/collections";
 
@@ -12,6 +13,11 @@ const LeftScreen = () => {
       <Row>
         <ContextColumn marginTop={40}>
           <TodoCollectionNav collections={_collections} />
+        </ContextColumn>
+      </Row>
+      <Row>
+        <ContextColumn marginTop={40}>
+          <AddTodoNav />
         </ContextColumn>
       </Row>
       <Row

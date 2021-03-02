@@ -8,6 +8,9 @@ const collections = [
   {
     name: "Links",
   },
+  {
+    name: "ALL",
+  },
 ];
 
 export default collections;
