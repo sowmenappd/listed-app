@@ -9,7 +9,7 @@ const { TextArea } = Input;
 const { Title } = Typography;
 
 function callback(key) {
-  console.log(key);
+  // console.log(key);
 }
 
 const Header = () => (
@@ -21,6 +21,7 @@ const Header = () => (
       color: "#fffafa",
       fontWeight: "normal",
     }}
+    ellipsis
   >
     <PlusSquareOutlined
       style={{
@@ -31,15 +32,16 @@ const Header = () => (
   </Title>
 );
 
-const AddTodoNav = () => {
-  const [tasks, setTasks] = useState([]);
-
-  const [task, setTask] = useState("");
-
-  const handleTaskDelete = (id) => {
-    const filtered = tasks.filter((t) => t.id !== id);
-    setTasks(filtered);
-  };
+const AddTodoNav = ({
+  todos,
+  tasks,
+  onTodoAdd,
+  onTaskAdd,
+  onTaskDelete,
+  onTaskListClear,
+}) => {
+  const [currentTodoTitle, setCurrentTodoTitle] = useState("");
+  const [currentTask, setCurrentTaskTitle] = useState("");
 
   return (
     <Collapse
@@ -55,51 +57,94 @@ const AddTodoNav = () => {
         key="1"
         style={{ borderWidth: 0 }}
       >
-        <Title level={4}>Title</Title>
-        <Input placeholder="New todo" allowClear />
-        <Divider />
-        <Title level={4}>Tasks</Title>
-        <Input
-          placeholder="Buy groceries, call mom, .."
-          allowClear
-          value={task}
-          onChange={(e) => {
-            setTask(e.target.value);
-          }}
-          onPressEnter={() => {
-            if (!task.length) return;
-            const newTasks = [...tasks, { id: tasks.length, name: task }];
-            setTasks(newTasks);
-            setTask("");
-          }}
-        />
-        <Divider>
-          {tasks.length === 0 && <Empty description="No tasks yet" />}
-        </Divider>
-        <AddTodoTasks tasks={tasks} onTaskDelete={handleTaskDelete} />
-
-        <Collapse
-          onChange={callback}
+        <div
           style={{
-            borderWidth: 0,
-            backgroundColor: "transparent",
-            marginLeft: -10,
+            overflowY: "auto",
+            height: "460px",
           }}
         >
-          <Panel
-            header={<b>Add more information</b>}
-            key="2"
+          <Title level={4}>Title</Title>
+          <Input
+            placeholder="New todo"
+            allowClear
+            value={currentTodoTitle}
+            onChange={(e) => {
+              setCurrentTodoTitle(e.target.value);
+            }}
+          />
+          <Divider />
+          <Title level={4}>Tasks</Title>
+          <Input
+            placeholder="Buy groceries, call mom, .."
+            allowClear
+            value={currentTask}
+            onChange={(e) => {
+              setCurrentTaskTitle(e.target.value);
+            }}
+            onPressEnter={(e) => {
+              onTaskAdd(currentTask);
+              setCurrentTaskTitle("");
+            }}
+          />
+          <Divider>
+            {tasks.length === 0 && <Empty description="No tasks yet" />}
+          </Divider>
+          <div style={{ overflowY: "auto", maxHeight: 150 }}>
+            <AddTodoTasks
+              tasks={tasks}
+              onTaskDelete={(i) => {
+                onTaskDelete(i);
+                setCurrentTaskTitle("");
+              }}
+            />
+            {tasks.length ? (
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button onClick={onTaskListClear}>Clear list</Button>
+              </div>
+            ) : null}
+          </div>
+
+          <Collapse
+            onChange={callback}
             style={{
               borderWidth: 0,
               backgroundColor: "transparent",
+              marginLeft: -10,
             }}
           >
-            <TextArea
-              rows={6}
-              placeholder="Add some useful information to catch on to.."
-            />
-          </Panel>
-        </Collapse>
+            <Panel
+              header={<b>Add more information</b>}
+              key="2"
+              style={{
+                borderWidth: 0,
+                backgroundColor: "transparent",
+              }}
+            >
+              <TextArea
+                rows={6}
+                placeholder="Add some useful information to catch on to.."
+              />
+            </Panel>
+          </Collapse>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              type="primary"
+              style={{ marginBottom: 10 }}
+              onClick={() => {
+                const todoObj = {
+                  id: todos.length,
+                  title: currentTodoTitle,
+                  tasks: tasks,
+                };
+                console.log(todoObj);
+                onTodoAdd?.(todoObj);
+                setCurrentTodoTitle("");
+              }}
+            >
+              Add
+            </Button>
+          </div>
+        </div>
       </Panel>
     </Collapse>
   );
@@ -107,11 +152,11 @@ const AddTodoNav = () => {
 
 const AddTodoTasks = ({ tasks, onTaskDelete }) => {
   return (
-    <Timeline>
+    <Timeline style={{ paddingTop: 5 }}>
       {tasks &&
-        tasks.map((t) => {
+        tasks.map((t, index) => {
           return (
-            <Timeline.Item>
+            <Timeline.Item key={index}>
               <div
                 style={{
                   display: "flex",
@@ -119,8 +164,12 @@ const AddTodoTasks = ({ tasks, onTaskDelete }) => {
                   justifyContent: "space-between",
                 }}
               >
-                {t.name}
-                <Button type="ghost" onClick={() => onTaskDelete(t.id)}>
+                {t}
+                <Button
+                  type="ghost"
+                  style={{ marginTop: 2 }}
+                  onClick={() => onTaskDelete(index)}
+                >
                   X
                 </Button>
               </div>

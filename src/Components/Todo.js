@@ -9,7 +9,8 @@ import {
 const { Meta } = Card;
 const { Text } = Typography;
 
-const Todo = ({ todo }) => {
+const Todo = ({ todo, onDelete, onEdit }) => {
+  console.log(Object.keys(todo));
   const { title, tasks } = todo;
   return (
     <div>

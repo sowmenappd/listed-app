@@ -3,7 +3,7 @@ import React from "react";
 import Logo from "../Components/Logo";
 import Todos from "../Components/Todos";
 
-const RightScreen = () => {
+const RightScreen = ({ todos }) => {
   return (
     <>
       <Logo />
@@ -16,7 +16,7 @@ const RightScreen = () => {
           // overflowY: "hidden",
         }}
       >
-        <Todos />
+        <Todos todos={todos} />
       </div>
     </>
   );

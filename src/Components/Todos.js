@@ -1,22 +1,25 @@
-import React, { useState } from "react";
-import { Col, Divider, List, Row, Typography } from "antd";
+import React from "react";
+import { Col, Divider, Empty, List, Row, Typography } from "antd";
 
 import Todo from "./Todo";
-import todos from "../TestData/todos";
 
-const { Title } = Typography;
+const { Text, Title } = Typography;
 
-const Todos = () => {
-  const [todos_, setTodos] = useState(todos);
-
+const Todos = ({ todos, onDeleteTodo, onEditTodo }) => {
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        flex: 1,
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
       <Row>
         <Col span={24}>
           <div
             style={{
               marginBottom: 30,
-              marginLeft: 40,
               width: "100%",
             }}
           >
@@ -33,16 +36,21 @@ const Todos = () => {
           </div>
         </Col>
       </Row>
-      <Row>
-        {todos.length && (
+      <Row
+        style={{
+          display: "flex",
+          flex: 1,
+          justifyContent: "space-evenly",
+        }}
+      >
+        {todos.length ? (
           <List
             style={{
               overflowX: "hidden",
-              overflowY: "clip",
-              width: "100%",
-              height: "70vh",
-              flex: 1,
-              marginLeft: 40,
+              overflowY: "auto",
+              height: 700,
+              paddingBottom: 20,
+              marginBottom: 100,
             }}
             grid={{
               gutter: 16,
@@ -53,13 +61,27 @@ const Todos = () => {
               xl: 3,
               xxl: 3,
             }}
-            dataSource={todos_}
-            renderItem={(todo) => (
-              <List.Item>
-                <Todo todo={todo} />
+            dataSource={todos}
+            renderItem={(td, i) => (
+              <List.Item key={i}>
+                <Todo todo={td} onDelete={null} onEdit={null} />
               </List.Item>
             )}
           />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Empty
+              description={<Text style={{ fontSize: 36 }}>No todos found</Text>}
+              imageStyle={{ marginTop: 50, width: 400, height: 250 }}
+            />
+          </div>
         )}
       </Row>
     </div>

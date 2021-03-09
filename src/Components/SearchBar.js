@@ -11,7 +11,7 @@ const SearchBar = ({ onSearch }) => {
       <Input
         size="large"
         type="text"
-        placeholder="search in lists"
+        placeholder="search todos"
         prefix={
           <SearchOutlined
             style={{

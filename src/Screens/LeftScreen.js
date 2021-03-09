@@ -2,24 +2,49 @@ import React from "react";
 import { Col, Row } from "antd";
 
 import SearchBar from "../Components/SearchBar";
+import AddCollectionNav from "../Components/AddCollectionNav";
 import TodoCollectionNav from "../Components/TodoCollectionNav";
 import AddTodoNav from "../Components/AddTodoNav";
 
 import _collections from "../TestData/collections";
 
-const LeftScreen = () => {
+const LeftScreen = ({
+  todos,
+  tasks,
+  task,
+  onTodoAdd,
+  onTaskAdd,
+  onTaskDelete,
+  onTaskTitleEdit,
+  onTaskListClear,
+}) => {
   return (
     <>
       <Row>
-        <ContextColumn marginTop={40}>
+        <ContextColumn marginTop={100}>
+          <AddCollectionNav />
+        </ContextColumn>
+      </Row>
+      <Row>
+        <ContextColumn marginTop={1}>
           <TodoCollectionNav collections={_collections} />
         </ContextColumn>
       </Row>
       <Row>
         <ContextColumn marginTop={40}>
-          <AddTodoNav />
+          <AddTodoNav
+            onTodoAdd={onTodoAdd}
+            onTaskAdd={onTaskAdd}
+            onTaskDelete={onTaskDelete}
+            onTaskListClear={onTaskListClear}
+            onTaskTitleEdit={onTaskTitleEdit}
+            todos={todos}
+            tasks={tasks}
+            task={task}
+          />
         </ContextColumn>
       </Row>
+
       <Row
         style={{
           flexDirection: "column",
