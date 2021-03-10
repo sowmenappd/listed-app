@@ -1,17 +1,21 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "path";
 
 import connectToDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import todoRoutes from "./routes/todoRoutes.js";
 
-//connect database
-connectToDB();
+const env_path = path.join(process.cwd(), `.env.${process.env.NODE_ENV}`);
+console.log(env_path);
 
 //dotenv config
 dotenv.config({
-  path: path.join(__dirname, `../.env.${process.env.NODE_ENV})}`),
+  path: env_path,
 });
+
+//connect database
+connectToDB();
 
 const app = express();
 
