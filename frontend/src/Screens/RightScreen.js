@@ -13,7 +13,6 @@ const RightScreen = ({ todos }) => {
           alignSelf: "center",
           paddingLeft: 20,
           paddingRight: 20,
-          // overflowY: "hidden",
         }}
       >
         <Todos todos={todos} />

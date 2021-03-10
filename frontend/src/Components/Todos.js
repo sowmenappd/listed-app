@@ -13,6 +13,7 @@ const Todos = ({ todos, onDeleteTodo, onEditTodo }) => {
         flex: 1,
         flexDirection: "column",
         width: "100%",
+        height: "100%",
       }}
     >
       <Row>
@@ -36,30 +37,25 @@ const Todos = ({ todos, onDeleteTodo, onEditTodo }) => {
           </div>
         </Col>
       </Row>
-      <Row
-        style={{
-          display: "flex",
-          flex: 1,
-          justifyContent: "space-evenly",
-        }}
-      >
+      <Row>
         {todos.length ? (
           <List
             style={{
               overflowX: "hidden",
               overflowY: "auto",
-              height: 700,
               paddingBottom: 20,
-              marginBottom: 100,
+              paddingLeft: 20,
+              display: "grid",
+              width: "100vw",
             }}
             grid={{
-              gutter: 16,
+              gutter: 32,
               xs: 1,
               sm: 1,
               md: 2,
               lg: 2,
               xl: 3,
-              xxl: 3,
+              xxl: 4,
             }}
             dataSource={todos}
             renderItem={(td, i) => (

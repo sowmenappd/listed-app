@@ -133,7 +133,7 @@ const AddTodoNav = ({
               onClick={() => {
                 const todoObj = {
                   id: todos.length,
-                  title: currentTodoTitle,
+                  name: currentTodoTitle,
                   tasks: tasks,
                 };
                 console.log(todoObj);

@@ -10,8 +10,8 @@ const { Meta } = Card;
 const { Text } = Typography;
 
 const Todo = ({ todo, onDelete, onEdit }) => {
-  console.log(Object.keys(todo));
-  const { title, tasks } = todo;
+  const { name, tasks } = todo;
+  console.log(name);
   return (
     <div>
       <Card
@@ -30,7 +30,7 @@ const Todo = ({ todo, onDelete, onEdit }) => {
       >
         <Skeleton loading={false} avatar active>
           <Meta
-            title={title || "Untitled todo"}
+            title={name || "Untitled todo"}
             description={tasks.map((task, i) => (
               <div key={i}>
                 <Text>
