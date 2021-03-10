@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "echo \"Use npm run up instead\"",
+    "frontend": "npm start --prefix frontend",
+    "backend": "NODE_ENV=\"development\" npm start --prefix backend",
+    "up": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "repository": {
     "type": "git",
@@ -16,5 +19,8 @@
     "url": "https://github.com/sowmenappd/todo-app/issues"
   },
   "homepage": "https://github.com/sowmenappd/todo-app#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^6.0.0"
+  }
 }
