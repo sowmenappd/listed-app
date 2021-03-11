@@ -8,7 +8,7 @@ const todoSchema = mongoose.Schema(
       unique: false,
     },
     tasks: {
-      type: Array,
+      type: [new mongoose.Schema({ name: String, completed: Boolean })],
       required: true,
       unique: false,
     },

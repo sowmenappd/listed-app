@@ -1,5 +1,5 @@
-import React from "react";
-import { Skeleton, Card, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Checkbox, Progress, Skeleton, Typography } from "antd";
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -7,11 +7,21 @@ import {
 } from "@ant-design/icons";
 
 const { Meta } = Card;
-const { Text } = Typography;
+// const { Text } = Typography;
 
-const Todo = ({ todo, onDelete, onEdit }) => {
+const Todo = ({ todo, onDelete, onEdit, onTaskToggle }) => {
   const { name, tasks } = todo;
-  console.log(name);
+  const [completedTodoPercentage, setCompletedPercentage] = useState(0);
+
+  useEffect(() => {
+    const pct = Math.round(
+      (tasks.filter((task) => task.completed === true).length / tasks.length) *
+        100
+    );
+    console.log("pct ", pct);
+    setCompletedPercentage(pct);
+  }, [todo, tasks]);
+
   return (
     <div>
       <Card
@@ -33,12 +43,22 @@ const Todo = ({ todo, onDelete, onEdit }) => {
             title={name || "Untitled todo"}
             description={tasks.map((task, i) => (
               <div key={i}>
-                <Text>
-                  {i + 1}. {task}
-                </Text>
+                <Checkbox
+                  onChange={() => onTaskToggle(todo, task)}
+                  checked={task.completed}
+                >
+                  {task.name}
+                </Checkbox>
                 <br />
               </div>
             ))}
+            avatar={
+              <Progress
+                type="circle"
+                percent={completedTodoPercentage}
+                width={50}
+              />
+            }
           />
         </Skeleton>
       </Card>

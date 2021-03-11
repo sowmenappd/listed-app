@@ -38,6 +38,34 @@ const MainScreen = () => {
     setTasks(newTasks);
   };
 
+  const handleTodoTaskToggle = (todo, task) => {
+    // const oldTodos = todos.filter((t) => t !== todo);
+
+    const todoIndex = todos.findIndex((t) => t === todo);
+    const taskIndex = todo.tasks.findIndex((t) => t === task);
+
+    //copy all unchanged tasks
+    const oldTasks = todo.tasks.filter((t) => t !== task);
+    //toggle the target task
+    const toggleTask = { ...task, completed: !task.completed };
+    //set the new task
+    const modifiedTodo = {
+      ...todo,
+      tasks: [
+        ...oldTasks.slice(0, taskIndex),
+        toggleTask,
+        ...oldTasks.slice(taskIndex),
+      ],
+    };
+
+    const newTodos = [
+      ...todos.slice(0, todoIndex),
+      modifiedTodo,
+      ...todos.slice(todoIndex + 1),
+    ];
+    setTodos(newTodos);
+  };
+
   const handleTaskDelete = (id) => {
     const filtered = tasks.filter((_, index) => index !== id);
     setTasks(filtered);
@@ -61,7 +89,7 @@ const MainScreen = () => {
           />
         </Col>
         <Col style={{ backgroundColor: "#fafaff" }} span={18}>
-          <RightScreen todos={todos} />
+          <RightScreen todos={todos} onTodoTaskToggle={handleTodoTaskToggle} />
         </Col>
       </Row>
     </div>

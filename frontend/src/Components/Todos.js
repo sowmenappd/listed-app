@@ -5,7 +5,7 @@ import Todo from "./Todo";
 
 const { Text, Title } = Typography;
 
-const Todos = ({ todos, onDeleteTodo, onEditTodo }) => {
+const Todos = ({ todos, onTodoTaskToggle, onDeleteTodo, onEditTodo }) => {
   return (
     <div
       style={{
@@ -60,7 +60,12 @@ const Todos = ({ todos, onDeleteTodo, onEditTodo }) => {
             dataSource={todos}
             renderItem={(td, i) => (
               <List.Item key={i}>
-                <Todo todo={td} onDelete={null} onEdit={null} />
+                <Todo
+                  todo={td}
+                  onTaskToggle={onTodoTaskToggle}
+                  onDelete={null}
+                  onEdit={null}
+                />
               </List.Item>
             )}
           />
