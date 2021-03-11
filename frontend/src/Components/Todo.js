@@ -5,6 +5,7 @@ import {
   EllipsisOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import config from "../config.js";
 
 const { Meta } = Card;
 // const { Text } = Typography;
@@ -34,7 +35,9 @@ const Todo = ({ todo, onDelete, onEdit, onTaskToggle }) => {
           <EditOutlined key="edit" onClick={() => console.log("edit")} />,
           <EllipsisOutlined
             key="ellipsis"
-            onClick={() => console.log("more")}
+            onClick={() => {
+              console.log("more");
+            }}
           />,
         ]}
       >

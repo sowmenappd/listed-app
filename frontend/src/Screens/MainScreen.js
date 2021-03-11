@@ -14,7 +14,6 @@ const MainScreen = () => {
     (async () => {
       const userId = "60491df3f8e08af8c3126e09";
       const _todos = await axios.get(`/api/todos?userId=${userId}`);
-      console.log(_todos.data);
       setTodos(_todos.data);
     })();
   }, []);
@@ -39,8 +38,6 @@ const MainScreen = () => {
   };
 
   const handleTodoTaskToggle = (todo, task) => {
-    // const oldTodos = todos.filter((t) => t !== todo);
-
     const todoIndex = todos.findIndex((t) => t === todo);
     const taskIndex = todo.tasks.findIndex((t) => t === task);
 
