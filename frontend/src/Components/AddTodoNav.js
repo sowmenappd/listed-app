@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Divider, Empty, Timeline, Typography } from "antd";
+import React, { useMemo, useState } from "react";
+import { Button, Divider, Empty, Select, Timeline, Typography } from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { Collapse } from "antd";
 import { Input } from "antd";
@@ -33,15 +33,17 @@ const Header = () => (
 );
 
 const AddTodoNav = ({
-  todos,
   tasks,
   onTodoAdd,
   onTaskAdd,
   onTaskDelete,
   onTaskListClear,
+  busy,
 }) => {
   const [currentTodoTitle, setCurrentTodoTitle] = useState("");
   const [currentTask, setCurrentTaskTitle] = useState("");
+
+  const defTags = useMemo(() => ["important", "home", "work", "personal"], []);
 
   return (
     <Collapse
@@ -72,6 +74,28 @@ const AddTodoNav = ({
               setCurrentTodoTitle(e.target.value);
             }}
           />
+
+          <Select
+            mode="tags"
+            style={{ width: "70%", marginTop: 8 }}
+            placeholder="Add some tags"
+            onChange={null}
+            tokenSeparators={[","]}
+          >
+            {defTags.map((tag) => (
+              <Select.Option key={tag}>{tag}</Select.Option>
+            ))}
+          </Select>
+
+          <Select
+            defaultValue="none"
+            bordered={false}
+            style={{ color: "skyblue" }}
+          >
+            <Select.Option value="none">No collection</Select.Option>
+            <Select.Option value="a">Collection 1</Select.Option>
+            <Select.Option value="b">Collection 2</Select.Option>
+          </Select>
           <Divider />
           <Title level={4}>Tasks</Title>
           <Input
@@ -130,11 +154,15 @@ const AddTodoNav = ({
             <Button
               type="primary"
               style={{ marginBottom: 10 }}
+              disabled={busy}
+              loading={busy}
               onClick={() => {
+                if (!tasks.length) return;
                 const todoObj = {
-                  id: todos.length,
                   name: currentTodoTitle,
                   tasks: tasks,
+                  collectionId: "",
+                  userId: "60491df3f8e08af8c3126e09",
                 };
                 console.log(todoObj);
                 onTodoAdd?.(todoObj);
@@ -164,7 +192,7 @@ const AddTodoTasks = ({ tasks, onTaskDelete }) => {
                   justifyContent: "space-between",
                 }}
               >
-                {t}
+                {t.name}
                 <Button
                   type="ghost"
                   style={{ marginTop: 2 }}

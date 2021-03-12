@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm start:dev",
+    "start": "npm run start:dev",
     "frontend:dev": "env-cmd -f frontend/.env.dev npm start --prefix frontend",
     "backend:dev": "NODE_ENV=\"dev\" npm start --prefix backend",
     "start:dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",

@@ -63,8 +63,8 @@ const Todos = ({ todos, onTodoTaskToggle, onDeleteTodo, onEditTodo }) => {
                 <Todo
                   todo={td}
                   onTaskToggle={onTodoTaskToggle}
-                  onDelete={null}
-                  onEdit={null}
+                  onDelete={onDeleteTodo}
+                  onEdit={onEditTodo}
                 />
               </List.Item>
             )}
