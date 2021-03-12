@@ -1,6 +1,7 @@
-import express from "express";
-import dotenv from "dotenv";
 import path from "path";
+import dotenv from "dotenv";
+import express from "express";
+import bodyParser from "body-parser";
 
 import connectToDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -18,6 +19,8 @@ dotenv.config({
 connectToDB();
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //Creating API for user
 app.use("/api/users", userRoutes);
