@@ -3,6 +3,7 @@ import {
   Card,
   Checkbox,
   Divider,
+  Input,
   Modal,
   Progress,
   Skeleton,
@@ -16,12 +17,15 @@ const { Text } = Typography;
 
 const EditTodoModal = ({
   todoData,
+  onAddTask,
   onChangeTaskName,
   onUpdated,
   submitAsyncHandler,
 }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [completedTodoPercentage, setCompletedPercentage] = useState(0);
+
+  const [addTaskState, setAddTask] = useState("");
 
   useEffect(() => {
     if (!todoData) return;
@@ -121,6 +125,21 @@ const EditTodoModal = ({
                 <br />
               </div>
             ))}
+          <Input
+            placeholder="Add todos"
+            value={addTaskState}
+            bordered={false}
+            onChange={(e) => {
+              setAddTask(e.target.value);
+            }}
+            onPressEnter={(e) => {
+              const text = e.target.value;
+              if (!text) return;
+
+              onAddTask?.({ name: text, completed: false });
+              setAddTask("");
+            }}
+          />
         </div>
       </Modal>
     </>

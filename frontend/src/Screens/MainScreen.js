@@ -38,6 +38,26 @@ const MainScreen = () => {
     setCurrentTodo(modifiedTodo);
   };
 
+  const handleTodoTaskAdd = (task) => {
+    if (!focusedTodo) {
+      //throw error
+      return;
+    }
+
+    const todoIndex = todos.findIndex((t) => t === focusedTodo);
+
+    const newTasks = [...focusedTodo.tasks, task];
+    const newTodo = { ...focusedTodo, tasks: newTasks };
+
+    let newTodos = [
+      ...todos.slice(0, todoIndex),
+      newTodo,
+      ...todos.slice(todoIndex + 1),
+    ];
+    setTodos(newTodos);
+    setCurrentTodo(newTodo);
+  };
+
   const [addingActivity, setAddingActiviyState] = useState(false);
 
   useEffect(() => {
@@ -56,11 +76,8 @@ const MainScreen = () => {
 
     setAddingActiviyState(true);
 
-    if (todoObj.name) {
-      todoObj.name = todoObj.name.trim();
-    } else {
-      todoObj.name = "Untitled Todo";
-    }
+    todoObj.name = todoObj.name ? todoObj.name.trim() : "Untitled Todo";
+
     const newTodos = [todoObj, ...todos];
     setTodos(newTodos);
     setTasks([]);
@@ -102,8 +119,6 @@ const MainScreen = () => {
       });
     }
   };
-
-  const handleTodoUpdate = async (todo) => {};
 
   const handleTaskAdd = (task) => {
     const newTasks = [...tasks, { name: task, completed: false }];
@@ -180,6 +195,7 @@ const MainScreen = () => {
         </Col>
         <EditTodoModal
           todoData={focusedTodo}
+          onAddTask={handleTodoTaskAdd}
           onChangeTaskName={handleTodoTaskNameChange}
           onUpdated={(b) => {
             if (!b) {

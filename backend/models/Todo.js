@@ -22,6 +22,11 @@ const todoSchema = mongoose.Schema(
       required: true,
       unique: false,
     },
+    tags: {
+      type: [new mongoose.Schema({ name: String })],
+      unique: false,
+      required: false,
+    },
   },
   {
     timestamps: true,

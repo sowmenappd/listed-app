@@ -11,14 +11,20 @@ import {
   Tag,
   Typography,
 } from "antd";
-import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import {
+  DownloadOutlined,
+  UploadOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+} from "@ant-design/icons";
 
 const { Meta } = Card;
-const { Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
-  const { name, tasks } = todo;
+  const { name, tasks, tags } = todo;
   const [completedTodoPercentage, setCompletedPercentage] = useState(0);
+  const [showMore, setShowMore] = useState(tasks.length > 5);
 
   useEffect(() => {
     const pct = Math.round(
@@ -54,7 +60,7 @@ const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
   return (
     <div>
       <Card
-        style={{ width: 300, maxHeight: 500, marginTop: 16 }}
+        style={{ width: 300, marginTop: 16 }}
         actions={[
           <Popover content="Edit note" trigger="hover">
             <EditOutlined key="edit" onClick={() => onEdit(todo)} />
@@ -78,21 +84,15 @@ const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
             title={name || "Untitled todo"}
             description={
               <div>
-                <Tag style={{ margin: 2 }} color="volcano">
-                  volcano
-                </Tag>
-                <Tag style={{ margin: 2 }} color="orange">
-                  orange
-                </Tag>
-                <Tag style={{ margin: 2 }} color="gold">
-                  gold
-                </Tag>
-                <Tag style={{ margin: 2 }} color="lime">
-                  lime
-                </Tag>
-                <Tag style={{ margin: 2 }} color="green">
-                  green
-                </Tag>
+                {tags.length ? (
+                  tags.map((tag, i) => (
+                    <Tag key={i} style={{ marginRight: 2 }} color="volcano">
+                      {tag.name}
+                    </Tag>
+                  ))
+                ) : (
+                  <Text type="secondary">No tags</Text>
+                )}
               </div>
             }
             avatar={
@@ -111,17 +111,48 @@ const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
             width: "100%",
           }}
         >
-          {tasks.map((task, i) => (
-            <div key={i}>
-              <Checkbox
-                onChange={() => onTaskToggle(todo, task)}
-                checked={task.completed}
+          {tasks.map((task, i) =>
+            !showMore && i > 4 ? null : (
+              <div key={i}>
+                <Paragraph
+                  ellipsis={{ rows: 3, symbol: "..." }}
+                  style={{ margin: 0 }}
+                >
+                  <Checkbox
+                    onChange={() => onTaskToggle(todo, task)}
+                    checked={task.completed}
+                  >
+                    <Text delete={task.completed}>{task.name}</Text>
+                  </Checkbox>
+                </Paragraph>
+                <br />
+              </div>
+            )
+          )}
+          <div
+            style={{
+              display: "flex",
+              flex: 1,
+              padding: 4,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {tasks.length > 5 && (
+              <Button
+                type="primary"
+                shape="round"
+                icon={!showMore ? <DownloadOutlined /> : <UploadOutlined />}
+                size="small"
+                style={{ fontSize: 12 }}
+                onClick={() => {
+                  setShowMore(!showMore);
+                }}
               >
-                <Text>{task.name}</Text>
-              </Checkbox>
-              <br />
-            </div>
-          ))}
+                Show {!showMore ? "more" : "less"}
+              </Button>
+            )}
+          </div>
         </div>
       </Card>
     </div>

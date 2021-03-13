@@ -45,8 +45,6 @@ const Todos = ({ todos, onTodoTaskToggle, onDeleteTodo, onEditTodo }) => {
               overflowY: "auto",
               paddingBottom: 20,
               paddingLeft: 20,
-              display: "grid",
-              width: "100vw",
             }}
             grid={{
               gutter: 32,

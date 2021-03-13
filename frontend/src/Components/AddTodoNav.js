@@ -42,6 +42,7 @@ const AddTodoNav = ({
 }) => {
   const [currentTodoTitle, setCurrentTodoTitle] = useState("");
   const [currentTask, setCurrentTaskTitle] = useState("");
+  const [currentTags, setCurrentTags] = useState([]);
 
   const defTags = useMemo(() => ["important", "home", "work", "personal"], []);
 
@@ -79,7 +80,13 @@ const AddTodoNav = ({
             mode="tags"
             style={{ width: "70%", marginTop: 8 }}
             placeholder="Add some tags"
-            onChange={null}
+            onChange={(values) => {
+              console.log(values);
+              let _tags = values.map((value) => ({
+                name: value,
+              }));
+              setCurrentTags(_tags);
+            }}
             tokenSeparators={[","]}
           >
             {defTags.map((tag) => (
@@ -105,7 +112,7 @@ const AddTodoNav = ({
             onChange={(e) => {
               setCurrentTaskTitle(e.target.value);
             }}
-            onPressEnter={(e) => {
+            onPressEnter={() => {
               onTaskAdd(currentTask);
               setCurrentTaskTitle("");
             }}
@@ -161,12 +168,14 @@ const AddTodoNav = ({
                 const todoObj = {
                   name: currentTodoTitle,
                   tasks: tasks,
+                  tags: currentTags,
                   collectionId: "",
                   userId: "60491df3f8e08af8c3126e09",
                 };
                 console.log(todoObj);
                 onTodoAdd?.(todoObj);
                 setCurrentTodoTitle("");
+                setCurrentTags([]);
               }}
             >
               Add
