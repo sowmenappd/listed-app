@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import connectToDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import todoRoutes from "./routes/todoRoutes.js";
+import collectionRoutes from "./routes/collectionRoutes.js";
 
 const env_path = path.join(process.cwd(), `.env.${process.env.NODE_ENV}`);
 console.log(env_path);
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 //Creating API for user
 app.use("/api/users", userRoutes);
 app.use("/api/todos", todoRoutes);
+app.use("/api/collections", collectionRoutes);
 
 const PORT = process.env.PORT || 5000;
 

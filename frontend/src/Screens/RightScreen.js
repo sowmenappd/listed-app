@@ -3,7 +3,20 @@ import React from "react";
 import Logo from "../Components/Logo";
 import Todos from "../Components/Todos";
 
-const RightScreen = ({ onDeleteTodo, onEditTodo, onTodoTaskToggle, todos }) => {
+const RightScreen = ({
+  collections,
+  loadingTodos,
+  onUpdateTag,
+  onCollectionAdd,
+  onCollectionDelete,
+  onDeleteTodo,
+  onEditTodo,
+  onSelectCollection,
+  onTodoTaskToggle,
+  onUpdateTodo,
+  selectedCollection,
+  todos,
+}) => {
   return (
     <>
       <Logo />
@@ -16,10 +29,18 @@ const RightScreen = ({ onDeleteTodo, onEditTodo, onTodoTaskToggle, todos }) => {
         }}
       >
         <Todos
-          todos={todos}
-          onTodoTaskToggle={onTodoTaskToggle}
+          collections={collections}
+          loading={loadingTodos}
+          onCollectionAdd={onCollectionAdd}
+          onCollectionDelete={onCollectionDelete}
           onDeleteTodo={onDeleteTodo}
           onEditTodo={onEditTodo}
+          onSelectCollection={onSelectCollection}
+          onTodoTaskToggle={onTodoTaskToggle}
+          onUpdateTag={onUpdateTag}
+          onUpdateTodo={onUpdateTodo}
+          selectedCollection={selectedCollection}
+          todos={todos}
         />
       </div>
     </>

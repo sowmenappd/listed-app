@@ -10,6 +10,10 @@ import EditTodoModal from "../Components/EditTodoModal";
 const MainScreen = () => {
   const [todos, setTodos] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [collections, setCollections] = useState([
+    { name: "Default", _id: "" },
+  ]);
+  const [selectedCollection, setSelectedCollection] = useState("");
 
   const [focusedTodo, setCurrentTodo] = useState(null);
   const handleTodoTaskNameChange = (todo, index, taskName) => {
@@ -59,14 +63,79 @@ const MainScreen = () => {
   };
 
   const [addingActivity, setAddingActiviyState] = useState(false);
+  const [loadingTodos, setLoadingTodos] = useState(true);
 
   useEffect(() => {
-    (async () => {
+    const getTodos = async () => {
+      setTodos([]);
+      setLoadingTodos(true);
+
       const userId = "60491df3f8e08af8c3126e09";
-      const _todos = await axios.get(`/api/todos?userId=${userId}`);
+
+      let _todos;
+      if (selectedCollection) {
+        _todos = await axios.get(
+          `/api/todos?collectionId=${selectedCollection}`
+        );
+      } else {
+        _todos = await axios.get(`/api/todos?userId=${userId}`);
+      }
+
       setTodos(_todos.data);
-    })();
+      setLoadingTodos(false);
+    };
+    getTodos();
+  }, [selectedCollection]);
+
+  useEffect(() => {
+    const getCollections = async () => {
+      const userId = "60491df3f8e08af8c3126e09";
+      const _collections = await axios.get(`/api/collections?userId=${userId}`);
+      setCollections([{ name: "Default", _id: "" }, ..._collections.data]);
+      console.log(_collections.data);
+    };
+    getCollections();
   }, []);
+
+  const handleCollectionAdd = async (collectionObj) => {
+    const res = await axios.post("/api/collections", collectionObj);
+
+    if (res.status === 200) {
+      let newCollection = res.data;
+      const newCollections = [...collections, newCollection];
+      setCollections(newCollections);
+    }
+  };
+
+  const handleCollectionDelete = async (collectionObj) => {
+    const res = await axios.delete("/api/collections", {
+      data: collectionObj,
+    });
+
+    if (res.status === 200) {
+      notification.info({
+        message: "Collection deleted.",
+        description:
+          "Todos in this collection have been shifted to Default collection.",
+      });
+
+      const fCollections = collections.filter(
+        (c) => c._id !== collectionObj._id
+      );
+      setCollections(fCollections);
+      setSelectedCollection("");
+    } else {
+      notification.error({
+        message: "Deletion unsuccessful.",
+        description: "Something went wrong.",
+      });
+    }
+  };
+
+  const handleCollectionSelect = (collectionKey) => {
+    console.log(collectionKey);
+    setSelectedCollection(collectionKey);
+  };
 
   const handleTodoAdd = async (todoObj) => {
     if (!todoObj.tasks) {
@@ -78,17 +147,20 @@ const MainScreen = () => {
 
     todoObj.name = todoObj.name ? todoObj.name.trim() : "Untitled Todo";
 
-    const newTodos = [todoObj, ...todos];
-    setTodos(newTodos);
-    setTasks([]);
-
     const res = await axios.post("/api/todos", todoObj);
     setAddingActiviyState(false);
 
+    let newTodos;
+
     if (res.status === 200) {
+      let newTodo = res.data;
+      newTodos = [newTodo, ...todos];
+      setTodos(newTodos);
+      setTasks([]);
+
       notification.success({
         message: "Todo added successfully!",
-        description: `${todoObj.name}`,
+        description: `${newTodo.name}`,
       });
     } else {
       notification.error({
@@ -120,6 +192,28 @@ const MainScreen = () => {
     }
   };
 
+  const handleTodoUpdate = async (todo) => {
+    const todoIndex = todos.findIndex((t) => t._id === todo._id);
+    const oldTodo = todos[todoIndex];
+
+    const newTodos = [
+      ...todos.slice(0, todoIndex),
+      todo,
+      ...todos.slice(todoIndex + 1),
+    ];
+
+    console.log(`In handler function: ${todo.name}`);
+    const res = await axios.put(`/api/todos/`, todo);
+    if (res.status !== 200) {
+      newTodos[todoIndex] = oldTodo;
+    } else {
+      notification.success({
+        message: "Todo updated successfully!",
+      });
+    }
+    setTodos(newTodos);
+  };
+
   const handleTaskAdd = (task) => {
     const newTasks = [...tasks, { name: task, completed: false }];
     setTasks(newTasks);
@@ -130,18 +224,15 @@ const MainScreen = () => {
     const taskIndex = todo.tasks.findIndex((t) => t === task);
 
     //copy all unchanged tasks
-    const oldTasks = todo.tasks.filter((t) => t !== task);
+    const oldTasks = todo.tasks.filter((t) => true);
     //toggle the target task
     const toggleTask = { ...task, completed: !task.completed };
     //set the new task
     const modifiedTodo = {
       ...todo,
-      tasks: [
-        ...oldTasks.slice(0, taskIndex),
-        toggleTask,
-        ...oldTasks.slice(taskIndex),
-      ],
+      tasks: [...oldTasks],
     };
+    modifiedTodo.tasks[taskIndex] = toggleTask;
 
     let newTodos = [
       ...todos.slice(0, todoIndex),
@@ -171,12 +262,32 @@ const MainScreen = () => {
     setTasks([]);
   };
 
+  const handleTagUpdate = async (todo, tags) => {
+    const index = todos.findIndex((t) => t._id === todo._id);
+    const oldTodo = todos[index];
+
+    const newTodo = { ...oldTodo, tags };
+
+    const res = await axios.put("/api/todos/", newTodo);
+    if (res.status !== 200) {
+      notification.error({
+        message: "Could not add tag. An error occured",
+      });
+    } else {
+      const newTodos = [...todos];
+      newTodos[index] = res.data;
+      setTodos(newTodos);
+    }
+  };
+
   return (
     <div>
       <Row style={{ height: "100vh" }}>
         <Col style={{ backgroundColor: "#191716" }} span={6}>
           <LeftScreen
             addingTodoActivity={addingActivity}
+            collections={collections}
+            onSelectCollection={handleCollectionSelect}
             onTodoAdd={handleTodoAdd}
             onTaskAdd={handleTaskAdd}
             onTaskDelete={handleTaskDelete}
@@ -187,13 +298,22 @@ const MainScreen = () => {
         </Col>
         <Col style={{ backgroundColor: "#fafaff" }} span={18}>
           <RightScreen
-            todos={todos}
+            collections={collections}
+            loadingTodos={loadingTodos}
+            onCollectionAdd={handleCollectionAdd}
+            onCollectionDelete={handleCollectionDelete}
             onDeleteTodo={handleTodoDelete}
             onEditTodo={(todo) => setCurrentTodo(todo)}
+            onSelectCollection={handleCollectionSelect}
             onTodoTaskToggle={handleTodoTaskToggle}
+            onUpdateTag={handleTagUpdate}
+            onUpdateTodo={handleTodoUpdate}
+            selectedCollection={selectedCollection}
+            todos={todos}
           />
         </Col>
         <EditTodoModal
+          collections={collections}
           todoData={focusedTodo}
           onAddTask={handleTodoTaskAdd}
           onChangeTaskName={handleTodoTaskNameChange}

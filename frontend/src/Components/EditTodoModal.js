@@ -16,6 +16,7 @@ const { Meta } = Card;
 const { Text } = Typography;
 
 const EditTodoModal = ({
+  collections,
   todoData,
   onAddTask,
   onChangeTaskName,
@@ -52,7 +53,6 @@ const EditTodoModal = ({
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     onUpdated?.(false);
   };
 
@@ -70,25 +70,51 @@ const EditTodoModal = ({
       >
         <Skeleton loading={false} avatar active>
           <Meta
-            title={todoData?.name}
-            description={
-              <div>
-                <Tag style={{ margin: 2 }} color="volcano">
-                  volcano
-                </Tag>
-                <Tag style={{ margin: 2 }} color="orange">
-                  orange
-                </Tag>
-                <Tag style={{ margin: 2 }} color="gold">
-                  gold
-                </Tag>
-                <Tag style={{ margin: 2 }} color="lime">
-                  lime
-                </Tag>
-                <Tag style={{ margin: 2 }} color="green">
-                  green
-                </Tag>
+            title={
+              <div
+                style={{
+                  display: "flex",
+                  flex: 1,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {todoData?.name}
+                {todoData && (
+                  <Text
+                    style={{
+                      display: "flex",
+                      flex: 1,
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      paddingRight: 20,
+                    }}
+                  >
+                    {collections.find(
+                      ({ _id }) => _id === todoData.collectionId
+                    )
+                      ? collections.find(
+                          ({ _id }) => _id === todoData.collectionId
+                        ).name
+                      : "Default"}
+                  </Text>
+                )}
               </div>
+            }
+            description={
+              todoData?.tags && (
+                <div>
+                  {todoData.tags.length ? (
+                    todoData.tags.map((tag, i) => (
+                      <Tag key={i} style={{ marginRight: 2 }} color="volcano">
+                        {tag.name}
+                      </Tag>
+                    ))
+                  ) : (
+                    <Text type="secondary">No tags</Text>
+                  )}
+                </div>
+              )
             }
             avatar={
               <Progress
@@ -114,7 +140,6 @@ const EditTodoModal = ({
                   <Text
                     editable={{
                       icon: <HighlightOutlined />,
-                      tooltip: "click to edit text",
                       onChange: (newTaskName) =>
                         onChangeTaskName?.(todoData, i, newTaskName),
                     }}

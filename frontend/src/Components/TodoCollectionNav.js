@@ -3,9 +3,9 @@ import { Empty, Button } from "antd";
 
 import CollectionMenu from "./CollectionMenu";
 
-const TodoCollectionNav = ({ collections }) => {
+const TodoCollectionNav = ({ collections, onSelect }) => {
   return collections && collections.length ? (
-    <CollectionMenu coll={collections} />
+    <CollectionMenu coll={collections} onSelect={onSelect} />
   ) : (
     <EmptyComp />
   );

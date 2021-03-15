@@ -5,7 +5,7 @@ import { UnorderedListOutlined } from "@ant-design/icons";
 const { SubMenu } = Menu;
 const { Text } = Typography;
 
-const CollectionMenu = ({ coll }) => {
+const CollectionMenu = ({ coll, onSelect }) => {
   return (
     <Menu
       style={{
@@ -34,15 +34,19 @@ const CollectionMenu = ({ coll }) => {
           fontSize: 36,
         }}
       >
-        {coll.map(({ name }, i) => (
+        {coll.map(({ name, _id }) => (
           <Menu.Item
-            key={i}
+            key={_id}
             style={{
               margin: 0,
               backgroundColor: "#191716f4",
               color: "#fff",
               fontSize: 32,
               alignItems: "center",
+            }}
+            onClick={() => {
+              console.log(name);
+              onSelect(_id);
             }}
           >
             <Text style={{ color: "white", paddingLeft: 40 }}>{name}</Text>

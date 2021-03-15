@@ -6,12 +6,13 @@ import AddCollectionNav from "../Components/AddCollectionNav";
 import TodoCollectionNav from "../Components/TodoCollectionNav";
 import AddTodoNav from "../Components/AddTodoNav";
 
-import _collections from "../TestData/collections";
+// import _collections from "../TestData/collections";
 
 const LeftScreen = ({
-  todos,
+  collections,
   tasks,
   task,
+  onSelectCollection,
   onTodoAdd,
   onTaskAdd,
   onTaskDelete,
@@ -21,20 +22,35 @@ const LeftScreen = ({
 }) => {
   return (
     <>
+      <Row
+        style={{
+          flexDirection: "column",
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <ContextColumn marginTop={10}>
+          <SearchBar />
+        </ContextColumn>
+      </Row>
       <Row>
-        <ContextColumn marginTop={100}>
+        <ContextColumn marginTop={30}>
           <AddCollectionNav />
         </ContextColumn>
       </Row>
       <Row>
         <ContextColumn marginTop={1}>
-          <TodoCollectionNav collections={_collections} />
+          <TodoCollectionNav
+            collections={collections}
+            onSelect={onSelectCollection}
+          />
         </ContextColumn>
       </Row>
       <Row>
         <ContextColumn marginTop={40}>
           <AddTodoNav
             busy={addingTodoActivity}
+            collections={collections}
             onTodoAdd={onTodoAdd}
             onTaskAdd={onTaskAdd}
             onTaskDelete={onTaskDelete}
@@ -43,20 +59,6 @@ const LeftScreen = ({
             tasks={tasks}
             task={task}
           />
-        </ContextColumn>
-      </Row>
-
-      <Row
-        style={{
-          flexDirection: "column",
-          position: "absolute",
-          width: "100%",
-          alignItems: "center",
-          bottom: 20,
-        }}
-      >
-        <ContextColumn>
-          <SearchBar />
         </ContextColumn>
       </Row>
     </>

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import User from "../models/User.js";
 import Todo from "../models/Todo.js";
+import Collection from "../models/Collection.js";
 
 const connectToDB = async () => {
   try {

@@ -8,7 +8,6 @@ import {
   Popover,
   Progress,
   Skeleton,
-  Tag,
   Typography,
 } from "antd";
 import {
@@ -18,13 +17,23 @@ import {
   EllipsisOutlined,
 } from "@ant-design/icons";
 
+import TagAdder from "./TagAdder";
+
 const { Meta } = Card;
 const { Paragraph, Text } = Typography;
 
-const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
+const Todo = ({
+  todo,
+  onUpdateTag,
+  onChangeCollection,
+  onDelete,
+  onEdit,
+  onUpdate,
+  onTaskToggle,
+}) => {
   const { name, tasks, tags } = todo;
   const [completedTodoPercentage, setCompletedPercentage] = useState(0);
-  const [showMore, setShowMore] = useState(tasks.length > 5);
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     const pct = Math.round(
@@ -81,19 +90,27 @@ const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
       >
         <Skeleton loading={false} avatar active>
           <Meta
-            title={name || "Untitled todo"}
+            title={
+              <Text
+                editable={{
+                  onChange: (new_name) => {
+                    const _name = new_name.trim();
+                    if (_name && _name.length) {
+                      const newTodo = { ...todo, name: _name };
+                      onUpdate(newTodo);
+                    }
+                  },
+                }}
+              >
+                {name || "Untitled todo"}
+              </Text>
+            }
             description={
-              <div>
-                {tags.length ? (
-                  tags.map((tag, i) => (
-                    <Tag key={i} style={{ marginRight: 2 }} color="volcano">
-                      {tag.name}
-                    </Tag>
-                  ))
-                ) : (
-                  <Text type="secondary">No tags</Text>
-                )}
-              </div>
+              tags && (
+                <div>
+                  <TagAdder todo={todo} onUpdate={onUpdateTag} />
+                </div>
+              )
             }
             avatar={
               <Progress
@@ -112,7 +129,7 @@ const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
           }}
         >
           {tasks.map((task, i) =>
-            !showMore && i > 4 ? null : (
+            !showMore && i > 3 ? null : (
               <div key={i}>
                 <Paragraph
                   ellipsis={{ rows: 3, symbol: "..." }}
@@ -122,7 +139,14 @@ const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
                     onChange={() => onTaskToggle(todo, task)}
                     checked={task.completed}
                   >
-                    <Text delete={task.completed}>{task.name}</Text>
+                    <Text
+                      style={{
+                        fontStyle: task.completed ? "italic" : "normal",
+                        color: task.completed ? "slategray" : "black",
+                      }}
+                    >
+                      {task.name}
+                    </Text>
                   </Checkbox>
                 </Paragraph>
                 <br />
@@ -138,7 +162,7 @@ const Todo = ({ todo, onChangeCollection, onDelete, onEdit, onTaskToggle }) => {
               alignItems: "center",
             }}
           >
-            {tasks.length > 5 && (
+            {tasks.length > 4 && (
               <Button
                 type="primary"
                 shape="round"

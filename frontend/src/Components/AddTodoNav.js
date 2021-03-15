@@ -8,10 +8,6 @@ const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Title } = Typography;
 
-function callback(key) {
-  // console.log(key);
-}
-
 const Header = () => (
   <Title
     style={{
@@ -33,6 +29,7 @@ const Header = () => (
 );
 
 const AddTodoNav = ({
+  collections,
   tasks,
   onTodoAdd,
   onTaskAdd,
@@ -43,12 +40,12 @@ const AddTodoNav = ({
   const [currentTodoTitle, setCurrentTodoTitle] = useState("");
   const [currentTask, setCurrentTaskTitle] = useState("");
   const [currentTags, setCurrentTags] = useState([]);
+  const [currentCollection, setCurrentCollection] = useState("Default");
 
   const defTags = useMemo(() => ["important", "home", "work", "personal"], []);
 
   return (
     <Collapse
-      onChange={callback}
       style={{
         backgroundColor: "#191716",
         borderWidth: 0,
@@ -63,7 +60,6 @@ const AddTodoNav = ({
         <div
           style={{
             overflowY: "auto",
-            height: "460px",
           }}
         >
           <Title level={4}>Title</Title>
@@ -95,13 +91,20 @@ const AddTodoNav = ({
           </Select>
 
           <Select
-            defaultValue="none"
+            placeholder="Select collection"
             bordered={false}
             style={{ color: "skyblue" }}
+            onSelect={(value) => {
+              setCurrentCollection(value);
+            }}
+            style={{ width: 120 }}
           >
-            <Select.Option value="none">No collection</Select.Option>
-            <Select.Option value="a">Collection 1</Select.Option>
-            <Select.Option value="b">Collection 2</Select.Option>
+            {collections &&
+              collections.map(({ name, _id }) => (
+                <Select.Option value={_id} key={_id}>
+                  {name}
+                </Select.Option>
+              ))}
           </Select>
           <Divider />
           <Title level={4}>Tasks</Title>
@@ -136,7 +139,6 @@ const AddTodoNav = ({
           </div>
 
           <Collapse
-            onChange={callback}
             style={{
               borderWidth: 0,
               backgroundColor: "transparent",
@@ -169,7 +171,7 @@ const AddTodoNav = ({
                   name: currentTodoTitle,
                   tasks: tasks,
                   tags: currentTags,
-                  collectionId: "",
+                  collectionId: currentCollection,
                   userId: "60491df3f8e08af8c3126e09",
                 };
                 console.log(todoObj);
