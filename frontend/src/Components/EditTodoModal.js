@@ -95,8 +95,12 @@ const EditTodoModal = ({
                     )
                       ? collections.find(
                           ({ _id }) => _id === todoData.collectionId
-                        ).name
-                      : "Default"}
+                        ).name === "All"
+                        ? "No collection"
+                        : collections.find(
+                            ({ _id }) => _id === todoData.collectionId
+                          ).name
+                      : "No collection"}
                   </Text>
                 )}
               </div>

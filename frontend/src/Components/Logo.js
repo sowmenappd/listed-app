@@ -17,7 +17,8 @@ const Logo = () => {
           fontWeight: "bolder",
         }}
       >
-        todo
+        <span style={{ color: "blueviolet" }}>list</span>
+        <span style={{ color: "darkmagenta" }}>ed</span>
         <Text style={{ color: "#E6AF2E", fontSize: 84, lineHeight: 0 }}>.</Text>
       </Title>
     </>

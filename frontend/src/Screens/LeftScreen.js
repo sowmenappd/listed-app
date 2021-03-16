@@ -12,6 +12,8 @@ const LeftScreen = ({
   collections,
   tasks,
   task,
+  onAddCollection,
+  onSearch,
   onSelectCollection,
   onTodoAdd,
   onTaskAdd,
@@ -30,12 +32,12 @@ const LeftScreen = ({
         }}
       >
         <ContextColumn marginTop={10}>
-          <SearchBar />
+          <SearchBar onSearch={onSearch} />
         </ContextColumn>
       </Row>
       <Row>
         <ContextColumn marginTop={30}>
-          <AddCollectionNav />
+          <AddCollectionNav onAdd={onAddCollection} />
         </ContextColumn>
       </Row>
       <Row>

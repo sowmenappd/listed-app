@@ -12,6 +12,7 @@ const RightScreen = ({
   onDeleteTodo,
   onEditTodo,
   onSelectCollection,
+  onTodoChangeCollection,
   onTodoTaskToggle,
   onUpdateTodo,
   selectedCollection,
@@ -36,6 +37,7 @@ const RightScreen = ({
           onDeleteTodo={onDeleteTodo}
           onEditTodo={onEditTodo}
           onSelectCollection={onSelectCollection}
+          onTodoChangeCollection={onTodoChangeCollection}
           onTodoTaskToggle={onTodoTaskToggle}
           onUpdateTag={onUpdateTag}
           onUpdateTodo={onUpdateTodo}

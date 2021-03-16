@@ -11,7 +11,7 @@ const SearchBar = ({ onSearch }) => {
       <Input
         size="large"
         type="text"
-        placeholder="search todos"
+        placeholder="search lists, tags, and more.."
         prefix={
           <SearchOutlined
             style={{
@@ -29,7 +29,6 @@ const SearchBar = ({ onSearch }) => {
           setSearchFocus(false);
         }}
         onChange={(e) => {
-          console.log(e.target.value);
           onSearch?.(e.target.value);
         }}
         style={{ backgroundColor: searchFocused ? "white" : "transparent" }}

@@ -1,10 +1,9 @@
 import {
   createTodo,
-  createUserCollection,
   deleteTodo,
   getTodoByUserId,
+  searchTodos,
   updateTodo,
-  getUserCollectionsById,
 } from "../controllers/todoController.js";
 import express from "express";
 const router = express.Router();
@@ -16,7 +15,7 @@ router.route("/").put(updateTodo);
 router.route("/:id").delete(deleteTodo);
 
 router.route("/:userId").get(getTodoByUserId);
-router.route("/:userId/collections").get(getUserCollectionsById);
-router.route("/:userId/collections").post(createUserCollection);
+
+router.route("/search").post(searchTodos);
 
 export default router;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Typography } from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { Collapse } from "antd";
@@ -7,7 +7,9 @@ import { Input } from "antd";
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-const AddCollectionNav = () => {
+const AddCollectionNav = ({ onAdd }) => {
+  const [name, setName] = useState("");
+
   return (
     <Collapse
       //   onChange={callback}
@@ -26,16 +28,15 @@ const AddCollectionNav = () => {
         <Input
           placeholder="New collection title"
           allowClear
-          //   value={task}
-          //   onChange={(e) => {
-          //     setTask(e.target.value);
-          //   }}
-          //   onPressEnter={() => {
-          //     if (!task.length) return;
-          //     const newTasks = [...tasks, { id: tasks.length, name: task }];
-          //     setTasks(newTasks);
-          //     setTask("");
-          //   }}
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+          onPressEnter={() => {
+            if (!name || name.length < 4) return;
+            onAdd?.({ name, userId: "60491df3f8e08af8c3126e09" });
+            setName("");
+          }}
         />
         <div
           style={{
@@ -45,7 +46,16 @@ const AddCollectionNav = () => {
             paddingTop: 10,
           }}
         >
-          <Button title="Create"> Create </Button>
+          <Button
+            disabled={name.length < 4}
+            type="primary"
+            onClick={() => {
+              setName("");
+              onAdd?.({ name, userId: "60491df3f8e08af8c3126e09" });
+            }}
+          >
+            Add
+          </Button>
         </div>
       </Panel>
     </Collapse>

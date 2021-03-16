@@ -31,6 +31,7 @@ const Todos = ({
   onDeleteTodo,
   onEditTodo,
   onSelectCollection,
+  onTodoChangeCollection,
   onUpdateTodo,
   onUpdateTag,
   selectedCollection,
@@ -60,7 +61,12 @@ const Todos = ({
                   marginBottom: 10,
                 }}
               >
-                Your todos
+                <span style={{ color: "blueviolet" }}>
+                  <b>Your </b>
+                </span>
+                <span style={{ color: "darkmagenta" }}>
+                  <b>lists</b>
+                </span>
               </Title>
             </Divider>
             <div
@@ -106,6 +112,7 @@ const Todos = ({
                   onEdit={onEditTodo}
                   onUpdate={onUpdateTodo}
                   onUpdateTag={onUpdateTag}
+                  onChangeCollection={onTodoChangeCollection}
                 />
               </List.Item>
             )}
@@ -158,18 +165,10 @@ const Todos = ({
 const LoadingCard = () => (
   <Card
     style={{ width: 300, marginTop: 16 }}
-    actions={[
-      <SettingOutlined key="setting" />,
-      <EditOutlined key="edit" />,
-      <EllipsisOutlined key="ellipsis" />,
-    ]}
+    actions={[<EditOutlined key="edit" />, <EllipsisOutlined key="ellipsis" />]}
   >
     <Skeleton loading active>
-      <Meta
-        // avatar={<Avatar src="" />}
-        title="Card title"
-        description="This is the description"
-      />
+      <Meta title="Card title" description="This is the description" />
     </Skeleton>
   </Card>
 );

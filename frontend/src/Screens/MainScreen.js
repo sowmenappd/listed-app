@@ -6,14 +6,14 @@ import LeftScreen from "./LeftScreen";
 import RightScreen from "./RightScreen";
 
 import EditTodoModal from "../Components/EditTodoModal";
+import ChangeCollectionModal from "../Components/ChangeCollectionModal";
 
 const MainScreen = () => {
   const [todos, setTodos] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [collections, setCollections] = useState([
-    { name: "Default", _id: "" },
-  ]);
+  const [collections, setCollections] = useState([{ name: "All", _id: "" }]);
   const [selectedCollection, setSelectedCollection] = useState("");
+  const [changeCollectionTodo, setChangeCollectionTodo] = useState(null);
 
   const [focusedTodo, setCurrentTodo] = useState(null);
   const handleTodoTaskNameChange = (todo, index, taskName) => {
@@ -84,15 +84,14 @@ const MainScreen = () => {
       setTodos(_todos.data);
       setLoadingTodos(false);
     };
-    getTodos();
-  }, [selectedCollection]);
+    if (!changeCollectionTodo) getTodos();
+  }, [selectedCollection, changeCollectionTodo]);
 
   useEffect(() => {
     const getCollections = async () => {
       const userId = "60491df3f8e08af8c3126e09";
       const _collections = await axios.get(`/api/collections?userId=${userId}`);
-      setCollections([{ name: "Default", _id: "" }, ..._collections.data]);
-      console.log(_collections.data);
+      setCollections([{ name: "All", _id: "" }, ..._collections.data]);
     };
     getCollections();
   }, []);
@@ -116,7 +115,7 @@ const MainScreen = () => {
       notification.info({
         message: "Collection deleted.",
         description:
-          "Todos in this collection have been shifted to Default collection.",
+          'Todos in this collection have been shifted to "All" collection.',
       });
 
       const fCollections = collections.filter(
@@ -135,6 +134,18 @@ const MainScreen = () => {
   const handleCollectionSelect = (collectionKey) => {
     console.log(collectionKey);
     setSelectedCollection(collectionKey);
+  };
+
+  const handleSearch = async (term) => {
+    console.log("Search:", term);
+    if (!term || term.length < 3) {
+      return;
+    }
+    const userId = "60491df3f8e08af8c3126e09";
+    const result = await axios.post(
+      `/api/todos/search?q=${term}&userId=${userId}`
+    );
+    result.data?.map(({ name }) => console.log(name));
   };
 
   const handleTodoAdd = async (todoObj) => {
@@ -192,6 +203,12 @@ const MainScreen = () => {
     }
   };
 
+  //this function call
+  const handleTodoCollectionChangeModalOpen = (todo) => {
+    console.log(todo);
+    setChangeCollectionTodo(todo);
+  };
+
   const handleTodoUpdate = async (todo) => {
     const todoIndex = todos.findIndex((t) => t._id === todo._id);
     const oldTodo = todos[todoIndex];
@@ -206,12 +223,15 @@ const MainScreen = () => {
     const res = await axios.put(`/api/todos/`, todo);
     if (res.status !== 200) {
       newTodos[todoIndex] = oldTodo;
+      setTodos(newTodos);
+      return false;
     } else {
       notification.success({
         message: "Todo updated successfully!",
       });
+      setTodos(newTodos);
+      return true;
     }
-    setTodos(newTodos);
   };
 
   const handleTaskAdd = (task) => {
@@ -287,7 +307,9 @@ const MainScreen = () => {
           <LeftScreen
             addingTodoActivity={addingActivity}
             collections={collections}
+            onAddCollection={handleCollectionAdd}
             onSelectCollection={handleCollectionSelect}
+            onSearch={handleSearch}
             onTodoAdd={handleTodoAdd}
             onTaskAdd={handleTaskAdd}
             onTaskDelete={handleTaskDelete}
@@ -305,6 +327,7 @@ const MainScreen = () => {
             onDeleteTodo={handleTodoDelete}
             onEditTodo={(todo) => setCurrentTodo(todo)}
             onSelectCollection={handleCollectionSelect}
+            onTodoChangeCollection={handleTodoCollectionChangeModalOpen}
             onTodoTaskToggle={handleTodoTaskToggle}
             onUpdateTag={handleTagUpdate}
             onUpdateTodo={handleTodoUpdate}
@@ -335,6 +358,17 @@ const MainScreen = () => {
           }}
           submitAsyncHandler={async () => {
             return await axios.put("/api/todos", focusedTodo);
+          }}
+        />
+        <ChangeCollectionModal
+          collections={collections}
+          todoData={changeCollectionTodo}
+          onChangeConfirm={async (td) => {
+            const success = await handleTodoUpdate(td);
+            if (success) setChangeCollectionTodo(null);
+          }}
+          onCancel={() => {
+            setChangeCollectionTodo(null);
           }}
         />
       </Row>

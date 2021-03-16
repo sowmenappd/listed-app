@@ -58,28 +58,15 @@ export const deleteTodo = async (req, res) => {
   res.status(200).json({ _id });
 };
 
-export const createUserCollection = async (req, res) => {
-  const { collectionName } = req.body;
-};
+export const searchTodos = async (req, res) => {
+  const { q, userId } = req.query;
 
-export const getUserCollectionsById = async (req, res) => {
-  const userId = req.params.userId;
+  const regex = ".*" + q + ".*";
 
-  let todos = [];
-  if (req.params.userId) {
-    todos = await Todo.find({ userId });
-  }
+  const todos = await Todo.find({ userId })
+    .where({ name: { $regex: new RegExp(regex, "i") } })
+    .select({ name: 1 });
+  console.log(todos);
 
-  let collections = [];
-  for (let i = 0; i < todos.length; i++) {
-    let { collectionId } = todos[i];
-    if (collectionId == "") {
-      collectionId = "default";
-    }
-    if (collections.findIndex((c) => c.collectionId === collectionId) === -1) {
-      collections.push({ collectionId });
-    }
-  }
-  console.log(collections);
-  res.status(200).json(collections);
+  res.status(200).json(todos);
 };

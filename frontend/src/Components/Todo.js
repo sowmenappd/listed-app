@@ -47,7 +47,7 @@ const Todo = ({
     return (
       <List>
         <List.Item>
-          <Button type="text" onClick={() => onChangeCollection(todo)}>
+          <Button type="text" onClick={() => onChangeCollection?.(todo)}>
             <Text style={{ textAlign: "left" }}>Change collection</Text>
           </Button>
         </List.Item>
