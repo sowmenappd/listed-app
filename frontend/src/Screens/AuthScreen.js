@@ -3,8 +3,9 @@ import { Col, Input, Space, Row } from "antd";
 import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 import Logo from "../Components/Logo";
+import LoginForm from "../Components/LoginForm";
 
-const { Password, Group } = Input;
+const { Group } = Input;
 
 const AuthScreen = () => {
   return (
@@ -30,28 +31,7 @@ const AuthScreen = () => {
             <span style={{ color: "darkmagenta", fontSize: 50 }}>in</span>
           </div>
           <div style={{ position: "absolute", top: 400 }}>
-            <Space direction="vertical">
-              <Group style={{ marginTop: 30 }}>
-                <Input
-                  type="email"
-                  placeholder="E-mail"
-                  iconRender={(visible) =>
-                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                  }
-                  style={{ fontSize: 30, marginBottom: 10 }}
-                  size="large"
-                />
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  iconRender={(visible) =>
-                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                  }
-                  style={{ fontSize: 30, marginTop: 10 }}
-                  size="large"
-                />
-              </Group>
-            </Space>
+            <LoginForm />
           </div>
         </Col>
         <Col
@@ -91,13 +71,10 @@ const AuthScreen = () => {
                 <Input
                   type="email"
                   placeholder="E-mail"
-                  iconRender={(visible) =>
-                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                  }
                   style={{ fontSize: 30, marginBottom: 10 }}
                   size="large"
                 />
-                <Input
+                <Input.Password
                   type="password"
                   placeholder="Password"
                   iconRender={(visible) =>
@@ -106,7 +83,7 @@ const AuthScreen = () => {
                   style={{ fontSize: 30, marginTop: 10, marginBottom: 10 }}
                   size="large"
                 />
-                <Input
+                <Input.Password
                   type="password"
                   placeholder="C Password"
                   iconRender={(visible) =>
