@@ -9,11 +9,7 @@ import {
   Skeleton,
   Typography,
 } from "antd";
-import {
-  SettingOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
 
 import Todo from "./Todo";
 import CollectionDropdown from "./CollectionDropdown";

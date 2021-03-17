@@ -93,11 +93,10 @@ const AddTodoNav = ({
           <Select
             placeholder="Select collection"
             bordered={false}
-            style={{ color: "skyblue" }}
+            style={{ width: 120, color: "skyblue" }}
             onSelect={(value) => {
               setCurrentCollection(value);
             }}
-            style={{ width: 120 }}
           >
             {collections &&
               collections.map(({ name, _id }) => (
