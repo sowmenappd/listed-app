@@ -3,46 +3,39 @@ import { Col, Input, Space, Row } from "antd";
 import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 import Logo from "../Components/Logo";
-import LoginForm from "../Components/LoginForm";
+import LoginComponent from "../Components/LoginComponent";
 
 const { Group } = Input;
+
+const colStyle = {};
+
+const layoutProps = {
+  style: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#191716",
+  },
+  span: 12,
+};
 
 const AuthScreen = () => {
   return (
     <div>
       <Row style={{ height: "100vh" }}>
-        <Col
-          style={{
-            backgroundColor: "#191716",
-            display: "flex",
-            flex: 1,
-            flexDirection: "column",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          span={12}
-        >
+        <Col {...layoutProps}>
           <div style={{ position: "absolute", top: 100 }}>
             <Logo />
           </div>
-          <div style={{ position: "absolute", top: 300 }}>
-            <span style={{ color: "blueviolet", fontSize: 50 }}>Log</span>
-            <span style={{ color: "darkmagenta", fontSize: 50 }}>in</span>
-          </div>
-          <div style={{ position: "absolute", top: 400 }}>
-            <LoginForm />
-          </div>
+          <LoginComponent onSubmit={null} />
         </Col>
         <Col
           style={{
+            ...colStyle,
             backgroundColor: "#fafaff",
-            display: "flex",
-            flex: 1,
-            flexDirection: "column",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
           }}
           span={12}
         >
