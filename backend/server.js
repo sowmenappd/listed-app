@@ -4,9 +4,11 @@ import express from "express";
 import bodyParser from "body-parser";
 
 import connectToDB from "./config/db.js";
+
+import authRoutes from "./routes/authRoutes.js";
+import collectionRoutes from "./routes/collectionRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import todoRoutes from "./routes/todoRoutes.js";
-import collectionRoutes from "./routes/collectionRoutes.js";
 
 const env_path = path.join(process.cwd(), `.env.${process.env.NODE_ENV}`);
 console.log(env_path);
@@ -27,6 +29,7 @@ app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
 app.use("/api/todos", todoRoutes);
 app.use("/api/collections", collectionRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
