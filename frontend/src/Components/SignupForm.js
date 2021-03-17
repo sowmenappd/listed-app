@@ -52,7 +52,6 @@ const SignupForm = ({ onBack, onSubmit }) => {
       color: "limegreen",
       htmlType: "button",
       onClick: () => {
-        console.log("back");
         onBack?.("login");
       },
       shape: "round",

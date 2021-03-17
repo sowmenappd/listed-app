@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Col, Row } from "antd";
 import Logo from "../Components/Logo";
 
 import LoginComponent from "../Components/LoginComponent";
 import RegisterComponent from "../Components/RegisterComponent";
+import WelcomeAnimation from "../Components/WelcomeAnimation";
 
 const layoutProps = (bgColor) => {
   return {
@@ -21,17 +22,16 @@ const layoutProps = (bgColor) => {
 };
 
 const AuthScreen = () => {
+  const cRef = useRef(null);
   const [page, setPage] = useState("login");
   const handleNavigation = (page) => {
     setPage(page);
+    cRef.current.goTo(page === "login" ? 0 : 1);
   };
   return (
     <div>
       <Row style={{ height: "100vh" }}>
         <Col {...layoutProps("#191716")}>
-          <div style={{ position: "fixed", top: 40 }}>
-            <Logo />
-          </div>
           <div
             style={{
               position: "fixed",
@@ -54,7 +54,18 @@ const AuthScreen = () => {
             )}
           </div>
         </Col>
-        <Col {...layoutProps("#fafaff")}></Col>
+        <Col {...layoutProps("#fafaff")}>
+          <div
+            style={{
+              position: "fixed",
+              top: 80,
+              paddingLeft: 30,
+            }}
+          >
+            <Logo />
+          </div>
+          <WelcomeAnimation carouselRef={cRef} />
+        </Col>
       </Row>
     </div>
   );
