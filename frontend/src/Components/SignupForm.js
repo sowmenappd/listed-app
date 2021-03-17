@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import BaseForm from "./BaseForm";
 import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 import rules from "../Config/FormRules";
 
-const LoginForm = ({ onBack, onSubmit }) => {
+const SignupForm = ({ onBack, onSubmit }) => {
   const formFields = [
     {
       name: "username",
@@ -23,10 +23,20 @@ const LoginForm = ({ onBack, onSubmit }) => {
           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />,
       },
     },
+    {
+      name: "cpass",
+      type: "password",
+      placeholder: "Confirm password",
+      rules: rules.password,
+      extraProps: {
+        iconRender: (visible) =>
+          visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />,
+      },
+    },
   ];
   const buttons = [
     {
-      color: "blueviolet",
+      color: "darkmagenta",
       htmlType: "submit",
       shape: "round",
       style: {
@@ -36,34 +46,24 @@ const LoginForm = ({ onBack, onSubmit }) => {
         fontWeight: "bold",
         fontSize: 24,
       },
-      text: "Submit 🚀",
+      text: "Create my account! 😄",
     },
     {
-      color: "darkmagenta",
+      color: "limegreen",
       htmlType: "button",
       onClick: () => {
-        console.log("forgot password");
+        console.log("back");
+        onBack?.("login");
       },
       shape: "round",
+      style: {
+        marginTop: 0,
+      },
       textStyle: {
         fontWeight: "bold",
         fontSize: 24,
       },
-      text: "Forgot password 😢",
-    },
-    {
-      color: "blue",
-      htmlType: "button",
-      onClick: () => {
-        console.log("go to signup");
-        onBack?.("signup");
-      },
-      shape: "round",
-      textStyle: {
-        fontWeight: "bold",
-        fontSize: 24,
-      },
-      text: "Create new account",
+      text: "◀️ Login page",
     },
   ];
   return (
@@ -76,4 +76,4 @@ const LoginForm = ({ onBack, onSubmit }) => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;

@@ -51,6 +51,7 @@ const BaseForm = ({ buttons, formName, fields, onSubmit, style }) => {
               text,
               textStyle,
               type,
+              onClick,
             },
             i
           ) => (
@@ -71,6 +72,7 @@ const BaseForm = ({ buttons, formName, fields, onSubmit, style }) => {
                     height,
                   }}
                   htmlType={htmlType}
+                  onClick={onClick}
                 >
                   <span style={{ ...textStyle }}>{text}</span>
                 </Button>
