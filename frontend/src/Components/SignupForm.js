@@ -4,7 +4,7 @@ import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 import rules from "../Config/FormRules";
 
-const SignupForm = ({ onBack, onSubmit }) => {
+const SignupForm = ({ onBack, onResponse, onSubmit }) => {
   const formFields = [
     {
       name: "username",
@@ -71,6 +71,7 @@ const SignupForm = ({ onBack, onSubmit }) => {
       buttons={buttons}
       formName="login"
       onSubmit={onSubmit}
+      onResponse={onResponse}
     />
   );
 };

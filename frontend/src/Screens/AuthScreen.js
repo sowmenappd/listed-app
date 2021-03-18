@@ -12,9 +12,14 @@ import config from "../config";
 const AuthScreen = ({ onToken }) => {
   const cRef = useRef(null);
   const [page, setPage] = useState("login");
-  const handleNavigation = (page) => {
+  const handleNavigation = (page, delay = false) => {
     setPage(page);
-    cRef.current.goTo(page === "login" ? 0 : 1);
+    const handler = () => cRef.current.goTo(page === "login" ? 0 : 1);
+    if (delay) {
+      setTimeout(handler, 1000);
+    } else {
+      handler();
+    }
   };
 
   const handleLogin = async (values) => {
@@ -31,17 +36,55 @@ const AuthScreen = ({ onToken }) => {
         return true;
       }
     } catch (ex) {
-      console.log(ex.message);
       return false;
     }
   };
 
   const handleLoginResponse = (success) => {
-    console.log(success);
     if (!success) {
       notification.error({
         message: "Invalid login.",
         description: "No user exists with these credentials.",
+      });
+    }
+  };
+
+  const handleSignup = async (values) => {
+    if (values.password !== values.cpass) {
+      notification.error({
+        message: "Passwords do not match",
+        placement: "bottomLeft",
+      });
+      return false;
+    }
+    try {
+      const {
+        data: { token },
+      } = await axios.post(`${config.apiBaseUrl}/auth/signup`, values);
+
+      if (token !== null) {
+        if (values.rememberMe === true) {
+          localStorage.setItem("token", token);
+        }
+        onToken?.(token);
+        return true;
+      }
+    } catch (ex) {
+      return false;
+    }
+  };
+
+  const handleSignupResponse = (success) => {
+    if (success) {
+      notification.success({
+        message: "Account created successfully!",
+        description: "You can sign in with your credentials.",
+      });
+      handleNavigation("login", true);
+    } else {
+      notification.error({
+        message: "Invalid signup attempt.",
+        description: "Something went wrong.",
       });
     }
   };
@@ -67,7 +110,8 @@ const AuthScreen = ({ onToken }) => {
               />
             ) : (
               <RegisterComponent
-                onSubmit={null}
+                onSubmit={handleSignup}
+                onResponse={handleSignupResponse}
                 onBackPressed={handleNavigation}
               />
             )}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Affix, Button, Col, Modal, notification, Row } from "antd";
-import { ExclamationCircleOutlined, LogoutOutlined } from "@ant-design/icons";
+import { Col, Modal, notification, Row } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import LeftScreen from "./LeftScreen";
 import RightScreen from "./RightScreen";
@@ -316,6 +316,15 @@ const MainScreen = ({ user, onLogout }) => {
             addingTodoActivity={addingActivity}
             collections={collections}
             onAddCollection={handleCollectionAdd}
+            onLogout={(v) => {
+              Modal.confirm({
+                title: "Are you sure you want to log out?",
+                icon: <ExclamationCircleOutlined />,
+                onOk: () => {
+                  onLogout?.(v);
+                },
+              });
+            }}
             onSelectCollection={handleCollectionSelect}
             onSearch={handleSearch}
             onTodoAdd={handleTodoAdd}
@@ -326,28 +335,6 @@ const MainScreen = ({ user, onLogout }) => {
             tasks={tasks}
             user={user}
           />
-          <Affix
-            offsetBottom={15}
-            style={{ marginLeft: 15, position: "absolute", bottom: 0 }}
-          >
-            <Button
-              danger
-              type="primary"
-              shape="circle"
-              onClick={() => {
-                Modal.confirm({
-                  title: "Are you sure you want to log out?",
-                  icon: <ExclamationCircleOutlined />,
-                  onOk: () => {
-                    onLogout?.(null);
-                  },
-                });
-              }}
-              style={{ width: 80, height: 80 }}
-            >
-              <LogoutOutlined style={{ fontSize: 30 }} />
-            </Button>
-          </Affix>
         </Col>
         <Col style={{ backgroundColor: "#fafaff" }} span={18}>
           <RightScreen

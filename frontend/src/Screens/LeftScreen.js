@@ -1,12 +1,11 @@
 import React from "react";
-import { Col, Row } from "antd";
+import { Avatar, Button, Card, Col, Modal, Row } from "antd";
+import { SettingOutlined, LogoutOutlined } from "@ant-design/icons";
 
 import SearchBar from "../Components/SearchBar";
 import AddCollectionNav from "../Components/AddCollectionNav";
 import TodoCollectionNav from "../Components/TodoCollectionNav";
 import AddTodoNav from "../Components/AddTodoNav";
-
-// import _collections from "../TestData/collections";
 
 const LeftScreen = ({
   collections,
@@ -22,6 +21,7 @@ const LeftScreen = ({
   onTaskListClear,
   addingTodoActivity,
   user,
+  onLogout,
 }) => {
   return (
     <>
@@ -50,20 +50,90 @@ const LeftScreen = ({
         </ContextColumn>
       </Row>
       <Row>
-        <ContextColumn marginTop={40}>
-          <AddTodoNav
-            busy={addingTodoActivity}
-            collections={collections}
-            onTodoAdd={onTodoAdd}
-            onTaskAdd={onTaskAdd}
-            onTaskDelete={onTaskDelete}
-            onTaskListClear={onTaskListClear}
-            onTaskTitleEdit={onTaskTitleEdit}
-            tasks={tasks}
-            task={task}
-            user={user}
+        <div style={{ zIndex: 2, width: "100%" }}>
+          <ContextColumn marginTop={40}>
+            <AddTodoNav
+              busy={addingTodoActivity}
+              collections={collections}
+              onTodoAdd={onTodoAdd}
+              onTaskAdd={onTaskAdd}
+              onTaskDelete={onTaskDelete}
+              onTaskListClear={onTaskListClear}
+              onTaskTitleEdit={onTaskTitleEdit}
+              tasks={tasks}
+              task={task}
+              user={user}
+            />
+          </ContextColumn>
+        </div>
+      </Row>
+      <Row
+        style={{
+          width: "100%",
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingBottom: 16,
+          position: "absolute",
+          bottom: 0,
+          zIndex: 1,
+          backgroundColor: "#fafaff",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            height: 60,
+            marginTop: 16,
+            display: "flex",
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Card.Meta
+            avatar={
+              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            }
+            title={user.username}
+            description={user._id}
           />
-        </ContextColumn>
+          <div
+            style={{
+              width: 80,
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button
+              type="link"
+              onClick={() => {
+                // Modal.confirm({
+                //   title: "Are you sure you want to logout?",
+                //   onOk: () => {
+                //     onLogout?.(null);
+                //   },
+                // });
+              }}
+            >
+              <SettingOutlined key="settings" style={{ fontSize: 20 }} />
+            </Button>
+            <Button
+              type="link"
+              danger
+              onClick={() => {
+                Modal.confirm({
+                  title: "Are you sure you want to logout?",
+                  onOk: () => {
+                    onLogout?.(null);
+                  },
+                });
+              }}
+            >
+              <LogoutOutlined key="logout" style={{ fontSize: 20 }} />
+            </Button>
+          </div>
+        </div>
       </Row>
     </>
   );
