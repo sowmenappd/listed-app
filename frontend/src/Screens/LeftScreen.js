@@ -1,11 +1,13 @@
 import React from "react";
-import { Avatar, Button, Card, Col, Modal, Row } from "antd";
+import { Avatar, Button, Card, Col, Row, Typography } from "antd";
 import { SettingOutlined, LogoutOutlined } from "@ant-design/icons";
 
 import SearchBar from "../Components/SearchBar";
 import AddCollectionNav from "../Components/AddCollectionNav";
 import TodoCollectionNav from "../Components/TodoCollectionNav";
 import AddTodoNav from "../Components/AddTodoNav";
+
+const { Text } = Typography;
 
 const LeftScreen = ({
   collections,
@@ -95,39 +97,24 @@ const LeftScreen = ({
             avatar={
               <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
             }
-            title={user.username}
-            description={user._id}
+            title={<Text ellipsis={{ symbol: "..." }}>{user.username}</Text>}
+            description={<Text ellipsis={{ symbol: "..." }}>{user._id}</Text>}
+            style={{ width: "100%" }}
           />
           <div
             style={{
-              width: 80,
+              paddingRight: 5,
               display: "flex",
-              justifyContent: "space-evenly",
             }}
           >
-            <Button
-              type="link"
-              onClick={() => {
-                // Modal.confirm({
-                //   title: "Are you sure you want to logout?",
-                //   onOk: () => {
-                //     onLogout?.(null);
-                //   },
-                // });
-              }}
-            >
+            <Button type="link" onClick={() => {}}>
               <SettingOutlined key="settings" style={{ fontSize: 20 }} />
             </Button>
             <Button
               type="link"
               danger
               onClick={() => {
-                Modal.confirm({
-                  title: "Are you sure you want to logout?",
-                  onOk: () => {
-                    onLogout?.(null);
-                  },
-                });
+                onLogout?.(null);
               }}
             >
               <LogoutOutlined key="logout" style={{ fontSize: 20 }} />

@@ -228,17 +228,22 @@ const MainScreen = ({ user, onLogout }) => {
     ];
 
     console.log(`In handler function: ${todo.name}`);
-    const res = await axios.put(`${apiBaseUrl}/todos/`, todo);
-    if (res.status !== 200) {
+    try {
+      const res = await axios.put(`${apiBaseUrl}/todos/`, todo);
+      if (res.status === 200) {
+        notification.success({
+          message: "Todo updated successfully!",
+        });
+        setTodos(newTodos);
+      }
+    } catch (ex) {
       newTodos[todoIndex] = oldTodo;
       setTodos(newTodos);
-      return false;
-    } else {
-      notification.success({
-        message: "Todo updated successfully!",
+      notification.error({
+        message: "Todo update failed.",
+        description: "Something went wrong.",
       });
-      setTodos(newTodos);
-      return true;
+      return false;
     }
   };
 
@@ -293,18 +298,22 @@ const MainScreen = ({ user, onLogout }) => {
   const handleTagUpdate = async (todo, tags) => {
     const index = todos.findIndex((t) => t._id === todo._id);
     const oldTodo = todos[index];
+    const oldTags = oldTodo.tags;
 
     const newTodo = { ...oldTodo, tags };
+    const newTodos = [...todos];
 
-    const res = await axios.put(`${apiBaseUrl}/todos/`, newTodo);
-    if (res.status !== 200) {
+    try {
+      const res = await axios.put(`${apiBaseUrl}/todos/`, newTodo);
+      if (res.status === 200) {
+        newTodos[index] = res.data;
+        setTodos(newTodos);
+      }
+    } catch (ex) {
       notification.error({
-        message: "Could not add tag. An error occured",
+        message: "Could not update tags.",
+        description: "An error occured. Please try again.",
       });
-    } else {
-      const newTodos = [...todos];
-      newTodos[index] = res.data;
-      setTodos(newTodos);
     }
   };
 
@@ -362,12 +371,20 @@ const MainScreen = ({ user, onLogout }) => {
           onUpdated={(b) => {
             if (!b) {
               const handler = async () => {
-                setCurrentTodo(null);
-                const userId = user._id;
-                const _todos = await axios.get(
-                  `${apiBaseUrl}/todos?userId=${userId}`
-                );
-                setTodos(_todos.data);
+                try {
+                  const userId = user._id;
+                  const _todos = await axios.get(
+                    `${apiBaseUrl}/todos?userId=${userId}`
+                  );
+                  setTodos(_todos.data);
+                  setCurrentTodo(null);
+                } catch (ex) {
+                  console.log(ex.message);
+                }
+                notification.error({
+                  message: "Todo update failed.",
+                  description: "Please try again.",
+                });
               };
               handler();
             } else {
@@ -385,8 +402,17 @@ const MainScreen = ({ user, onLogout }) => {
           collections={collections}
           todoData={changeCollectionTodo}
           onChangeConfirm={async (td) => {
-            const success = await handleTodoUpdate(td);
-            if (success) setChangeCollectionTodo(null);
+            try {
+              const success = await handleTodoUpdate(td);
+              if (success) {
+                setChangeCollectionTodo(null);
+              }
+            } catch (ex) {
+              notification.error({
+                message: "Couldn't update todo.",
+                description: "Something went wrong. Please try again.",
+              });
+            }
           }}
           onCancel={() => {
             setChangeCollectionTodo(null);

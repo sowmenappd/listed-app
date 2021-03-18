@@ -22,18 +22,14 @@ const TagAdder = ({ todo, onUpdate }) => {
     setInputValue(e.target.value);
   };
 
-  const handleInputConfirm = () => {
+  const handleInputConfirm = async () => {
     if (inputValue && !tags.find((t) => t.name === inputValue)) {
       const newTag = {
         name: inputValue,
       };
-      console.log(newTag);
-      // onAdd?.(todo, newTag);
       onUpdate?.(todo, [...tags, newTag]);
       setInputVisible(false);
       setInputValue("");
-    } else {
-      console.log("here");
     }
   };
 
@@ -48,19 +44,17 @@ const TagAdder = ({ todo, onUpdate }) => {
       name: editInputValue,
     };
 
-    onUpdate?.(tags);
+    onUpdate?.(newTags);
     setEditInputIndex(-1);
     setEditInputValue("");
   };
 
   const saveInputRef = (_input) => {
     input = _input;
-    // console.log(input.current);
   };
 
   const saveEditInputRef = (_input) => {
     editInput = _input;
-    // console.log(editInput.current);
   };
 
   return (
@@ -90,7 +84,6 @@ const TagAdder = ({ todo, onUpdate }) => {
               key={_id}
               closable
               onClose={() => {
-                console.log(_id, " deleted");
                 onUpdate?.(
                   todo,
                   tags.filter((t) => t._id !== _id)
@@ -99,14 +92,14 @@ const TagAdder = ({ todo, onUpdate }) => {
               style={{ margin: 2 }}
             >
               <span
-                onDoubleClick={(e) => {
-                  if (index !== 0) {
-                    setEditInputIndex(index);
-                    setEditInputValue(name);
-                    editInput.current?.focus();
-                    e.preventDefault();
-                  }
-                }}
+              // onDoubleClick={(e) => {
+              //   if (index !== 0) {
+              //     setEditInputIndex(index);
+              //     setEditInputValue(name);
+              //     editInput.current?.focus();
+              //     e.preventDefault();
+              //   }
+              // }}
               >
                 {isLongTag ? `${name.slice(0, 20)}...` : name}
               </span>

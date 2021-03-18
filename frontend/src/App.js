@@ -1,10 +1,12 @@
+import { useEffect, useState } from "react";
+import jwt from "jwt-simple";
+import axios from "axios";
+
 import "./App.css";
 import MainScreen from "./Screens/MainScreen";
 import AuthScreen from "./Screens/AuthScreen";
-import { useEffect, useState } from "react";
-import jwt from "jwt-simple";
 
-const App = ({ props }) => {
+const App = () => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -13,6 +15,18 @@ const App = ({ props }) => {
     const tk = _t || token;
 
     if (tk && tk.length > 0) {
+      axios.interceptors.request.use(
+        (config) => {
+          const token = localStorage.getItem("token");
+
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+
+          return config;
+        },
+        (error) => Promise.reject(error)
+      );
       const _u = jwt.decode(tk, process.env.REACT_APP_SRV_SECRET);
       if (_u) {
         setUser(_u);

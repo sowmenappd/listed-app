@@ -14,6 +14,7 @@ const ChangeCollectionModal = ({
   const [selectedOption, setOption] = useState(
     todoData ? todoData.collectionId : ""
   );
+  const [activity, setActivity] = useState(false);
 
   return (
     todoData && (
@@ -23,10 +24,15 @@ const ChangeCollectionModal = ({
         centered
         okText="Change"
         onOk={() => {
-          let _todo = { ...todoData, collectionId: selectedOption };
-          onChangeConfirm(_todo);
+          setActivity(true);
+          const handler = async () => {
+            let _todo = { ...todoData, collectionId: selectedOption };
+            await onChangeConfirm(_todo);
+            setActivity(false);
+          };
+          handler();
         }}
-        confirmLoading={false}
+        confirmLoading={activity}
         onCancel={onCancel}
         cancelText="Back"
       >

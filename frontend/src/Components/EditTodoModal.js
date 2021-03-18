@@ -40,12 +40,16 @@ const EditTodoModal = ({
 
   const handleOk = async () => {
     setConfirmLoading(true);
+    try {
+      const res = await submitAsyncHandler?.();
 
-    const res = await submitAsyncHandler?.();
-
-    if (res.status === 200) {
-      onUpdated?.(true);
-    } else {
+      if (res.status === 200) {
+        onUpdated?.(true);
+      } else {
+        onUpdated?.(false);
+      }
+    } catch (ex) {
+      console.log(ex.message);
       onUpdated?.(false);
     }
 
