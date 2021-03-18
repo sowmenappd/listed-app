@@ -17,6 +17,7 @@ const RightScreen = ({
   onUpdateTodo,
   selectedCollection,
   todos,
+  user,
 }) => {
   return (
     <>
@@ -43,6 +44,7 @@ const RightScreen = ({
           onUpdateTodo={onUpdateTodo}
           selectedCollection={selectedCollection}
           todos={todos}
+          user={user}
         />
       </div>
     </>

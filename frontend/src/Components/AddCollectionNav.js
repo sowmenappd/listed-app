@@ -7,7 +7,7 @@ import { Input } from "antd";
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-const AddCollectionNav = ({ onAdd }) => {
+const AddCollectionNav = ({ onAdd, user }) => {
   const [name, setName] = useState("");
 
   return (
@@ -34,7 +34,7 @@ const AddCollectionNav = ({ onAdd }) => {
           }}
           onPressEnter={() => {
             if (!name || name.length < 4) return;
-            onAdd?.({ name, userId: "60491df3f8e08af8c3126e09" });
+            onAdd?.({ name, userId: user._id });
             setName("");
           }}
         />
@@ -51,7 +51,7 @@ const AddCollectionNav = ({ onAdd }) => {
             type="primary"
             onClick={() => {
               setName("");
-              onAdd?.({ name, userId: "60491df3f8e08af8c3126e09" });
+              onAdd?.({ name, userId: user._id });
             }}
           >
             Add

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, notification } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Affix, Button, Col, Modal, notification, Row } from "antd";
+import { ExclamationCircleOutlined, LogoutOutlined } from "@ant-design/icons";
 
 import LeftScreen from "./LeftScreen";
 import RightScreen from "./RightScreen";
@@ -8,7 +9,10 @@ import RightScreen from "./RightScreen";
 import EditTodoModal from "../Components/EditTodoModal";
 import ChangeCollectionModal from "../Components/ChangeCollectionModal";
 
-const MainScreen = () => {
+import config from "../config";
+const { apiBaseUrl } = config;
+
+const MainScreen = ({ user, onLogout }) => {
   const [todos, setTodos] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [collections, setCollections] = useState([{ name: "All", _id: "" }]);
@@ -70,34 +74,38 @@ const MainScreen = () => {
       setTodos([]);
       setLoadingTodos(true);
 
-      const userId = "60491df3f8e08af8c3126e09";
+      const userId = user._id;
+      if (!userId) return;
 
       let _todos;
       if (selectedCollection) {
         _todos = await axios.get(
-          `/api/todos?collectionId=${selectedCollection}`
+          `${apiBaseUrl}/todos?collectionId=${selectedCollection}`
         );
       } else {
-        _todos = await axios.get(`/api/todos?userId=${userId}`);
+        _todos = await axios.get(`${apiBaseUrl}/todos?userId=${userId}`);
       }
 
       setTodos(_todos.data);
       setLoadingTodos(false);
     };
     if (!changeCollectionTodo) getTodos();
-  }, [selectedCollection, changeCollectionTodo]);
+  }, [selectedCollection, changeCollectionTodo, user._id]);
 
   useEffect(() => {
     const getCollections = async () => {
-      const userId = "60491df3f8e08af8c3126e09";
-      const _collections = await axios.get(`/api/collections?userId=${userId}`);
+      if (!user._id) return;
+      const userId = user._id;
+      const _collections = await axios.get(
+        `${apiBaseUrl}/collections?userId=${userId}`
+      );
       setCollections([{ name: "All", _id: "" }, ..._collections.data]);
     };
     getCollections();
-  }, []);
+  }, [user._id]);
 
   const handleCollectionAdd = async (collectionObj) => {
-    const res = await axios.post("/api/collections", collectionObj);
+    const res = await axios.post(`${apiBaseUrl}/collections`, collectionObj);
 
     if (res.status === 200) {
       let newCollection = res.data;
@@ -107,7 +115,7 @@ const MainScreen = () => {
   };
 
   const handleCollectionDelete = async (collectionObj) => {
-    const res = await axios.delete("/api/collections", {
+    const res = await axios.delete(`${apiBaseUrl}/collections`, {
       data: collectionObj,
     });
 
@@ -141,9 +149,9 @@ const MainScreen = () => {
     if (!term || term.length < 3) {
       return;
     }
-    const userId = "60491df3f8e08af8c3126e09";
+    const userId = user._id;
     const result = await axios.post(
-      `/api/todos/search?q=${term}&userId=${userId}`
+      `${apiBaseUrl}/todos/search?q=${term}&userId=${userId}`
     );
     result.data?.map(({ name }) => console.log(name));
   };
@@ -158,7 +166,7 @@ const MainScreen = () => {
 
     todoObj.name = todoObj.name ? todoObj.name.trim() : "Untitled Todo";
 
-    const res = await axios.post("/api/todos", todoObj);
+    const res = await axios.post(`${apiBaseUrl}/todos`, todoObj);
     setAddingActiviyState(false);
 
     let newTodos;
@@ -189,7 +197,7 @@ const MainScreen = () => {
     let _id = todo._id;
     console.log(_id);
 
-    const res = await axios.delete(`/api/todos/${_id}`);
+    const res = await axios.delete(`${apiBaseUrl}/todos/${_id}`);
     if (res.status !== 200) {
       setTodos(oldTodos);
       notification.error({
@@ -220,7 +228,7 @@ const MainScreen = () => {
     ];
 
     console.log(`In handler function: ${todo.name}`);
-    const res = await axios.put(`/api/todos/`, todo);
+    const res = await axios.put(`${apiBaseUrl}/todos/`, todo);
     if (res.status !== 200) {
       newTodos[todoIndex] = oldTodo;
       setTodos(newTodos);
@@ -261,7 +269,7 @@ const MainScreen = () => {
     ];
     setTodos(newTodos);
 
-    const res = await axios.put("/api/todos", modifiedTodo);
+    const res = await axios.put(`${apiBaseUrl}/todos`, modifiedTodo);
     if (res.status !== 200) {
       newTodos = [
         ...todos.slice(0, todoIndex),
@@ -288,7 +296,7 @@ const MainScreen = () => {
 
     const newTodo = { ...oldTodo, tags };
 
-    const res = await axios.put("/api/todos/", newTodo);
+    const res = await axios.put(`${apiBaseUrl}/todos/`, newTodo);
     if (res.status !== 200) {
       notification.error({
         message: "Could not add tag. An error occured",
@@ -316,7 +324,30 @@ const MainScreen = () => {
             onTaskListClear={handleTaskListClear}
             todos={todos}
             tasks={tasks}
+            user={user}
           />
+          <Affix
+            offsetBottom={15}
+            style={{ marginLeft: 15, position: "absolute", bottom: 0 }}
+          >
+            <Button
+              danger
+              type="primary"
+              shape="circle"
+              onClick={() => {
+                Modal.confirm({
+                  title: "Are you sure you want to log out?",
+                  icon: <ExclamationCircleOutlined />,
+                  onOk: () => {
+                    onLogout?.(null);
+                  },
+                });
+              }}
+              style={{ width: 80, height: 80 }}
+            >
+              <LogoutOutlined style={{ fontSize: 30 }} />
+            </Button>
+          </Affix>
         </Col>
         <Col style={{ backgroundColor: "#fafaff" }} span={18}>
           <RightScreen
@@ -333,6 +364,7 @@ const MainScreen = () => {
             onUpdateTodo={handleTodoUpdate}
             selectedCollection={selectedCollection}
             todos={todos}
+            user={user}
           />
         </Col>
         <EditTodoModal
@@ -344,8 +376,10 @@ const MainScreen = () => {
             if (!b) {
               const handler = async () => {
                 setCurrentTodo(null);
-                const userId = "60491df3f8e08af8c3126e09";
-                const _todos = await axios.get(`/api/todos?userId=${userId}`);
+                const userId = user._id;
+                const _todos = await axios.get(
+                  `${apiBaseUrl}/todos?userId=${userId}`
+                );
                 setTodos(_todos.data);
               };
               handler();
@@ -357,7 +391,7 @@ const MainScreen = () => {
             }
           }}
           submitAsyncHandler={async () => {
-            return await axios.put("/api/todos", focusedTodo);
+            return await axios.put(`${apiBaseUrl}/todos`, focusedTodo);
           }}
         />
         <ChangeCollectionModal

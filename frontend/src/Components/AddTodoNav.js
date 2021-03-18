@@ -36,6 +36,7 @@ const AddTodoNav = ({
   onTaskDelete,
   onTaskListClear,
   busy,
+  user,
 }) => {
   const [currentTodoTitle, setCurrentTodoTitle] = useState("");
   const [currentTask, setCurrentTaskTitle] = useState("");
@@ -171,7 +172,7 @@ const AddTodoNav = ({
                   tasks: tasks,
                   tags: currentTags,
                   collectionId: currentCollection,
-                  userId: "60491df3f8e08af8c3126e09",
+                  userId: user._id,
                 };
                 console.log(todoObj);
                 onTodoAdd?.(todoObj);

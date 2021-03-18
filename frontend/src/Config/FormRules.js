@@ -5,6 +5,10 @@ const rules = {
       message: "Please enter your username!",
       type: "email",
     },
+    {
+      min: 5,
+      message: "Email address must be valid.",
+    },
   ],
   password: [
     {

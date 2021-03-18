@@ -21,6 +21,7 @@ const LeftScreen = ({
   onTaskTitleEdit,
   onTaskListClear,
   addingTodoActivity,
+  user,
 }) => {
   return (
     <>
@@ -37,7 +38,7 @@ const LeftScreen = ({
       </Row>
       <Row>
         <ContextColumn marginTop={30}>
-          <AddCollectionNav onAdd={onAddCollection} />
+          <AddCollectionNav onAdd={onAddCollection} user={user} />
         </ContextColumn>
       </Row>
       <Row>
@@ -60,6 +61,7 @@ const LeftScreen = ({
             onTaskTitleEdit={onTaskTitleEdit}
             tasks={tasks}
             task={task}
+            user={user}
           />
         </ContextColumn>
       </Row>

@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 
-const BaseForm = ({ buttons, formName, fields, onSubmit, style }) => {
+const BaseForm = ({
+  buttons,
+  formName,
+  fields,
+  onSubmit,
+  onResponse,
+  style,
+}) => {
   const [form] = Form.useForm();
   const [formSubmitted, setFormSubmitted] = useState(false);
   return (
@@ -10,33 +17,43 @@ const BaseForm = ({ buttons, formName, fields, onSubmit, style }) => {
       name={formName}
       size="large"
       style={{ width: 400, ...style }}
-      onFinish={(values) => {
+      onFinish={async (values) => {
         setFormSubmitted(true);
-        onSubmit?.(values);
+        const value = await onSubmit?.(values);
+        onResponse?.(value);
+        setFormSubmitted(false);
       }}
     >
       {fields &&
-        fields.map(({ name, type, placeholder, rules, extraProps }, i) => (
-          <Form.Item name={name} rules={rules} key={i}>
-            {type === "password" ? (
-              <Input.Password
-                {...extraProps}
-                type={type}
-                placeholder={placeholder}
-                size="large"
-                size={extraProps ? extraProps.size || "large" : "large"}
-              />
-            ) : (
-              <Input
-                {...extraProps}
-                type={type}
-                placeholder={placeholder}
-                size="large"
-                size={extraProps ? extraProps.size || "large" : "large"}
-              />
-            )}
-          </Form.Item>
-        ))}
+        fields.map(({ label, name, type, placeholder, rules, extraProps }, i) =>
+          type === "checkbox" ? (
+            <Form.Item name={name} valuePropName="checked" key={i}>
+              <div
+                style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}
+              >
+                <Checkbox style={{ ...extraProps }}>{label}</Checkbox>
+              </div>
+            </Form.Item>
+          ) : (
+            <Form.Item name={name} rules={rules} key={i}>
+              {type === "password" ? (
+                <Input.Password
+                  {...extraProps}
+                  type={type}
+                  placeholder={placeholder}
+                  size={extraProps ? extraProps.size || "large" : "large"}
+                />
+              ) : (
+                <Input
+                  {...extraProps}
+                  type={type}
+                  placeholder={placeholder}
+                  size={extraProps ? extraProps.size || "large" : "large"}
+                />
+              )}
+            </Form.Item>
+          )
+        )}
 
       {buttons &&
         buttons.map(

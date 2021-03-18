@@ -31,6 +31,7 @@ const Todos = ({
   onUpdateTodo,
   onUpdateTag,
   selectedCollection,
+  user,
 }) => {
   return (
     <div
@@ -74,6 +75,7 @@ const Todos = ({
                 onAdd={onCollectionAdd}
                 onDelete={onCollectionDelete}
                 onSelect={onSelectCollection}
+                user={user}
               />
             </div>
           </div>

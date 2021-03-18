@@ -1,7 +1,7 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 
-const LoginComponent = ({ onSubmit, onBackPressed }) => {
+const LoginComponent = ({ onSubmit, onResponse, onBackPressed }) => {
   return (
     <>
       <div style={{ fontSize: 50, marginTop: 30, marginBottom: 40 }}>
@@ -9,7 +9,11 @@ const LoginComponent = ({ onSubmit, onBackPressed }) => {
         <span style={{ color: "darkmagenta" }}>in</span>
       </div>
       <div>
-        <LoginForm onSubmit={onSubmit} onBack={onBackPressed} />
+        <LoginForm
+          onSubmit={onSubmit}
+          onResponse={onResponse}
+          onBack={onBackPressed}
+        />
       </div>
     </>
   );

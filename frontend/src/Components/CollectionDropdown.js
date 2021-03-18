@@ -11,6 +11,7 @@ const CollectionDropdown = ({
   onAdd,
   onSelect,
   onDelete,
+  user,
 }) => {
   const [collectionName, setCollectionName] = useState("");
 
@@ -24,7 +25,7 @@ const CollectionDropdown = ({
       console.log("addItem");
       let collObj = {
         name: formatCollectionName(x),
-        userId: "60491df3f8e08af8c3126e09",
+        userId: user._id,
       };
       onAdd?.(collObj);
       setCollectionName("");

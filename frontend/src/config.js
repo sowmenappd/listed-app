@@ -1,6 +1,6 @@
 const config = {
   env: process.env.REACT_APP_NODE_ENV,
-  value: process.env.REACT_APP_VALUE,
+  apiBaseUrl: process.env.REACT_APP_API_BASE,
 };
 
 export default config;

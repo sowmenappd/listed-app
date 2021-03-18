@@ -39,7 +39,6 @@ const WelcomeAnimation = ({ carouselRef }) => {
         </div>
         <div>
           <Lottie options={options2} style={{ marginTop: 80, width: "60%" }} />
-          {/* */}
           <div style={{ textAlign: "center" }}>
             <Text type="secondary" style={{ fontSize: 30 }}>
               <b>Create your account today</b>,<br /> and start managing your

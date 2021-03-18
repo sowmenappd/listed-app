@@ -4,7 +4,7 @@ import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 import rules from "../Config/FormRules";
 
-const LoginForm = ({ onBack, onSubmit }) => {
+const LoginForm = ({ onBack, onSubmit, onResponse }) => {
   const formFields = [
     {
       name: "username",
@@ -21,6 +21,16 @@ const LoginForm = ({ onBack, onSubmit }) => {
       extraProps: {
         iconRender: (visible) =>
           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />,
+      },
+    },
+    {
+      name: "rememberMe",
+      type: "checkbox",
+      label: "Remember Me",
+      extraProps: {
+        color: "#fafaff",
+        fontSize: 20,
+        marginTop: -20,
       },
     },
   ];
@@ -71,6 +81,7 @@ const LoginForm = ({ onBack, onSubmit }) => {
       buttons={buttons}
       formName="login"
       onSubmit={onSubmit}
+      onResponse={onResponse}
     />
   );
 };
