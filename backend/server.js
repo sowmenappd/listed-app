@@ -1,3 +1,4 @@
+import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
 import express from "express";
@@ -22,6 +23,7 @@ dotenv.config({
 connectToDB();
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -37,3 +39,30 @@ app.listen(
   PORT,
   console.log(`App is running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );
+
+function ensureAuthenticated(req, res, next) {
+  if (!req.headers.authorization) {
+    return res.status(401).send({ error: "TokenMissing" });
+  }
+  var token = req.headers.authorization.split(" ")[1];
+
+  var payload = null;
+  try {
+    payload = jwt.decode(token, config.TOKEN_SECRET);
+  } catch (err) {
+    return res.status(401).send({ error: "TokenInvalid" });
+  }
+
+  if (payload.exp <= moment().unix()) {
+    return res.status(401).send({ error: "TokenExpired" });
+  }
+  // check if the user exists
+  Person.findById(payload.sub, function (err, person) {
+    if (!person) {
+      return res.status(401).send({ error: "PersonNotFound" });
+    } else {
+      req.user = payload.sub;
+      next();
+    }
+  });
+}
