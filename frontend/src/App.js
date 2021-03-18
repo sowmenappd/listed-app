@@ -7,11 +7,11 @@ import MainScreen from "./Screens/MainScreen";
 import AuthScreen from "./Screens/AuthScreen";
 
 const App = () => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const _t = localStorage.getItem("token") || null;
+    const _t = localStorage.getItem("token") || "";
     const tk = _t || token;
 
     if (tk && tk.length > 0) {

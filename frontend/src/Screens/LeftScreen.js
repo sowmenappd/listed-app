@@ -114,7 +114,7 @@ const LeftScreen = ({
               type="link"
               danger
               onClick={() => {
-                onLogout?.(null);
+                onLogout?.("");
               }}
             >
               <LogoutOutlined key="logout" style={{ fontSize: 20 }} />
