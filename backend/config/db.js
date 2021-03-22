@@ -8,7 +8,7 @@ const connectToDB = async () => {
     console.log("attempting to connect..");
     const databaseName = "todo-db";
     const con = await mongoose.connect(
-      `mongodb://localhost:27017/${databaseName}`,
+      `mongodb://${process.env.DATABASE_HOST}:27017/${databaseName}`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

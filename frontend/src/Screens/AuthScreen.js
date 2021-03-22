@@ -96,7 +96,6 @@ const AuthScreen = ({ onToken }) => {
           <div
             style={{
               position: "fixed",
-              top: 240,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
