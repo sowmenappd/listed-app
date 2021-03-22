@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run start:dev",
-    "frontend:dev": "env-cmd -f frontend/.env.dev npm start --prefix frontend",
+    "frontend:dev": "env-cmd -f frontend/.env.dev npm run tauri dev --prefix frontend",
     "backend:dev": "NODE_ENV=\"dev\" npm start --prefix backend",
-    "start:dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
+    "start:dev": "export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0 && concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
     "frontend:test": "env-cmd -f frontend/.env.test npm start --prefix frontend",
     "backend:test": "NODE_ENV=\"test\" npm start --prefix backend",
     "start:test": "concurrently \"npm run frontend:test\" \"npm run backend:test\""

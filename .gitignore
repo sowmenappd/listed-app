@@ -11,6 +11,9 @@
 # production
 /frontend/build
 
+#taur build files
+/frontend/src-tauri
+
 # misc
 .DS_Store
 **/.env.local
