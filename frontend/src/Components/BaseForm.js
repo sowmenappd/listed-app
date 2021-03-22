@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, Typography } from "antd";
+
+const { Text } = Typography;
 
 const BaseForm = ({
   buttons,
@@ -16,7 +18,7 @@ const BaseForm = ({
       form={form}
       name={formName}
       size="large"
-      style={{ width: 400, ...style }}
+      style={style}
       onFinish={async (values) => {
         setFormSubmitted(true);
         const value = await onSubmit?.(values);
@@ -24,36 +26,42 @@ const BaseForm = ({
         setFormSubmitted(false);
       }}
     >
-      {fields &&
-        fields.map(({ label, name, type, placeholder, rules, extraProps }, i) =>
-          type === "checkbox" ? (
-            <Form.Item name={name} valuePropName="checked" key={i}>
-              <div
-                style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}
-              >
-                <Checkbox style={{ ...extraProps }}>{label}</Checkbox>
-              </div>
-            </Form.Item>
-          ) : (
-            <Form.Item name={name} rules={rules} key={i}>
-              {type === "password" ? (
-                <Input.Password
-                  {...extraProps}
-                  type={type}
-                  placeholder={placeholder}
-                  size={extraProps ? extraProps.size || "large" : "large"}
-                />
+      <div>
+        {fields &&
+          fields.map(
+            ({ label, name, type, placeholder, rules, extraProps }, i) =>
+              type === "checkbox" ? (
+                <Form.Item name={name} valuePropName="checked" key={i}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flex: 1,
+                      width: "100%",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Checkbox style={{ ...extraProps }}>{label}</Checkbox>
+                  </div>
+                </Form.Item>
               ) : (
-                <Input
-                  {...extraProps}
-                  type={type}
-                  placeholder={placeholder}
-                  size={extraProps ? extraProps.size || "large" : "large"}
-                />
-              )}
-            </Form.Item>
-          )
-        )}
+                <Form.Item name={name} rules={rules} key={i}>
+                  {type === "password" ? (
+                    <Input.Password
+                      {...extraProps}
+                      type={type}
+                      placeholder={placeholder}
+                    />
+                  ) : (
+                    <Input
+                      {...extraProps}
+                      type={type}
+                      placeholder={placeholder}
+                    />
+                  )}
+                </Form.Item>
+              )
+          )}
+      </div>
 
       {buttons &&
         buttons.map(
@@ -91,7 +99,12 @@ const BaseForm = ({
                   htmlType={htmlType}
                   onClick={onClick}
                 >
-                  <span style={{ ...textStyle }}>{text}</span>
+                  <Text
+                    style={{ ...textStyle, width: "100%" }}
+                    ellipsis={{ symbol: ".." }}
+                  >
+                    {text}
+                  </Text>
                 </Button>
               </div>
             </Form.Item>

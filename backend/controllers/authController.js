@@ -30,7 +30,6 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid login." });
     }
   } catch ({ message }) {
-    console.log(message);
     return res.status(500).json({ message });
   }
 };
@@ -66,7 +65,6 @@ export const signUp = async (req, res) => {
       return res.status(500).json({ message: "Server encountered an error." });
     }
   } catch ({ message }) {
-    console.log(message);
     return res.status(500).json({ message });
   }
 };

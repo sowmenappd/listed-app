@@ -15,7 +15,6 @@ import todoRoutes from "./routes/todoRoutes.js";
 import User from "./models/User.js";
 
 const env_path = path.join(process.cwd(), `.env.${process.env.NODE_ENV}`);
-console.log(env_path);
 
 //dotenv config
 dotenv.config({

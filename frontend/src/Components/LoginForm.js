@@ -21,6 +21,7 @@ const LoginForm = ({ onBack, onSubmit, onResponse }) => {
       extraProps: {
         iconRender: (visible) =>
           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />,
+        size: "large",
       },
     },
     {

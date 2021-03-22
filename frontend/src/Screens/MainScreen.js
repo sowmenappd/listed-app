@@ -140,12 +140,10 @@ const MainScreen = ({ user, onLogout }) => {
   };
 
   const handleCollectionSelect = (collectionKey) => {
-    console.log(collectionKey);
     setSelectedCollection(collectionKey);
   };
 
   const handleSearch = async (term) => {
-    console.log("Search:", term);
     if (!term || term.length < 3) {
       return;
     }
@@ -153,12 +151,11 @@ const MainScreen = ({ user, onLogout }) => {
     const result = await axios.post(
       `${apiBaseUrl}/todos/search?q=${term}&userId=${userId}`
     );
-    result.data?.map(({ name }) => console.log(name));
+    // result.data?.map(({ name }) => console.log(name));
   };
 
   const handleTodoAdd = async (todoObj) => {
     if (!todoObj.tasks) {
-      console.log("returning");
       return;
     }
 
@@ -195,7 +192,6 @@ const MainScreen = ({ user, onLogout }) => {
     setTodos(newTodos);
 
     let _id = todo._id;
-    console.log(_id);
 
     const res = await axios.delete(`${apiBaseUrl}/todos/${_id}`);
     if (res.status !== 200) {
@@ -213,7 +209,6 @@ const MainScreen = ({ user, onLogout }) => {
 
   //this function call
   const handleTodoCollectionChangeModalOpen = (todo) => {
-    console.log(todo);
     setChangeCollectionTodo(todo);
   };
 
@@ -227,7 +222,6 @@ const MainScreen = ({ user, onLogout }) => {
       ...todos.slice(todoIndex + 1),
     ];
 
-    console.log(`In handler function: ${todo.name}`);
     try {
       const res = await axios.put(`${apiBaseUrl}/todos/`, todo);
       if (res.status === 200) {
@@ -318,8 +312,8 @@ const MainScreen = ({ user, onLogout }) => {
   };
 
   return (
-    <div>
-      <Row style={{ height: "100vh" }}>
+    <div style={{ minWidth: 1400 }}>
+      <Row style={{ height: "100vh", width: "100vw" }}>
         <Col style={{ backgroundColor: "#191716" }} span={6}>
           <LeftScreen
             addingTodoActivity={addingActivity}
@@ -379,7 +373,10 @@ const MainScreen = ({ user, onLogout }) => {
                   setTodos(_todos.data);
                   setCurrentTodo(null);
                 } catch (ex) {
-                  console.log(ex.message);
+                  notification.error({
+                    message: ex.message,
+                    description: "Please try again.",
+                  });
                 }
                 notification.error({
                   message: "Todo update failed.",

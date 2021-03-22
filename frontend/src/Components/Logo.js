@@ -3,7 +3,7 @@ import { Typography } from "antd";
 
 const { Title, Text } = Typography;
 
-const Logo = () => {
+const Logo = ({ style }) => {
   return (
     <>
       <Title
@@ -15,6 +15,7 @@ const Logo = () => {
           fontSize: 72,
           padding: 20,
           fontWeight: "bolder",
+          ...style,
         }}
       >
         <span style={{ color: "blueviolet" }}>list</span>

@@ -66,7 +66,7 @@ const AuthScreen = ({ onToken }) => {
         if (values.rememberMe === true) {
           localStorage.setItem("token", token);
         }
-        onToken?.(token);
+        onToken?.(token || "");
         return true;
       }
     } catch (ex) {
@@ -90,16 +90,15 @@ const AuthScreen = ({ onToken }) => {
   };
 
   return (
-    <div>
-      <Row style={{ height: "100vh" }}>
+    <div style={{ backgroundColor: "brown", height: "100vh", width: "100vw" }}>
+      <Row style={{ display: "flex", flex: 1, height: "100%" }}>
         <Col {...layoutProps("#191716")}>
           <div
             style={{
-              position: "fixed",
               top: 240,
-              display: "flex",
+              width: "80%",
               flexDirection: "column",
-              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             {page === "login" ? (
@@ -118,15 +117,7 @@ const AuthScreen = ({ onToken }) => {
           </div>
         </Col>
         <Col {...layoutProps("#fafaff")}>
-          <div
-            style={{
-              position: "fixed",
-              top: 80,
-              paddingLeft: 30,
-            }}
-          >
-            <Logo />
-          </div>
+          <Logo style={{ marginLeft: 20 }} />
           <WelcomeAnimation carouselRef={cRef} />
         </Col>
       </Row>
@@ -140,7 +131,6 @@ const layoutProps = (bgColor) => {
       display: "flex",
       flex: 1,
       flexDirection: "column",
-      height: "100%",
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: bgColor || "transparent",
