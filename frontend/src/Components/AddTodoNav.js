@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef } from "react";
 import { Button, Divider, Empty, Select, Timeline, Typography } from "antd";
-import { FileAddOutlined } from "@ant-design/icons";
+import { PlusOutlined, OrderedListOutlined } from "@ant-design/icons";
 import { Collapse } from "antd";
 import { Input } from "antd";
 
@@ -19,7 +19,7 @@ const Header = () => (
     }}
     ellipsis
   >
-    <FileAddOutlined
+    <OrderedListOutlined
       style={{
         marginRight: 8,
       }}
@@ -144,7 +144,7 @@ const AddListNav = ({
               </div>
             ) : null}
           </div>
-          <Collapse
+          {/* <Collapse
             style={{
               borderWidth: 0,
               backgroundColor: "transparent",
@@ -164,11 +164,11 @@ const AddListNav = ({
                 placeholder="Add some useful information to catch on to.."
               />
             </Panel>
-          </Collapse>
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          </Collapse> */}
+          <Divider>
             <Button
               type="primary"
-              style={{ marginBottom: 10, marginRight: 10 }}
+              style={{ margin: 10 }}
               disabled={busy}
               loading={busy}
               shape="round"
@@ -181,16 +181,15 @@ const AddListNav = ({
                   collectionId: currentCollection,
                   userId: user._id,
                 };
-                console.log(todoObj);
+                // console.log(todoObj);
                 onTodoAdd?.(todoObj);
                 setCurrentTodoTitle("");
                 setCurrentTags([]);
-                console.log(Object.keys(selectRef.current));
               }}
             >
-              Add
+              Add <PlusOutlined />
             </Button>
-          </div>
+          </Divider>
         </div>
       </Panel>
     </Collapse>

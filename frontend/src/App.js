@@ -45,13 +45,15 @@ const App = () => {
   const handleToken = (t) => {
     setToken(t);
 
-    let str = JSON.stringify({ token: t });
-    fs.writeBinaryFile({
-      path: "./dat.file",
-      contents: new TextEncoder().encode(str),
-    }).catch((err) => {
-      console.log(err);
-    });
+    if (remember) {
+      let str = JSON.stringify({ token: t });
+      fs.writeBinaryFile({
+        path: "./dat.file",
+        contents: new TextEncoder().encode(str),
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
   };
 
   return (

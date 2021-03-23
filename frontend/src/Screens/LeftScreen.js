@@ -26,7 +26,7 @@ const LeftScreen = ({
   onLogout,
 }) => {
   return (
-    <>
+    <div style={{ position: "fixed", width: "30%" }}>
       <Row
         style={{
           flexDirection: "column",
@@ -71,11 +71,11 @@ const LeftScreen = ({
       </Row>
       <Row
         style={{
-          width: "100%",
           paddingLeft: 20,
           paddingRight: 20,
           paddingBottom: 16,
           position: "fixed",
+          width: "30%",
           bottom: 0,
           zIndex: 1,
           backgroundColor: "#fafaff",
@@ -83,7 +83,6 @@ const LeftScreen = ({
       >
         <div
           style={{
-            width: "100%",
             height: 60,
             marginTop: 16,
             display: "flex",
@@ -127,7 +126,7 @@ const LeftScreen = ({
           </div>
         </div>
       </Row>
-    </>
+    </div>
   );
 };
 
