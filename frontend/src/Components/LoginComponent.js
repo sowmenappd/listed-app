@@ -1,7 +1,12 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 
-const LoginComponent = ({ onSubmit, onResponse, onBackPressed }) => {
+const LoginComponent = ({
+  onSubmit,
+  onResponse,
+  onBackPressed,
+  onRemember,
+}) => {
   return (
     <>
       <div style={{ fontSize: 50, marginTop: 30, marginBottom: 40 }}>
@@ -13,6 +18,7 @@ const LoginComponent = ({ onSubmit, onResponse, onBackPressed }) => {
           onSubmit={onSubmit}
           onResponse={onResponse}
           onBack={onBackPressed}
+          onRemember={onRemember}
         />
       </div>
     </>

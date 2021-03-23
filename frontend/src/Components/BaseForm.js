@@ -25,34 +25,44 @@ const BaseForm = ({
       }}
     >
       {fields &&
-        fields.map(({ label, name, type, placeholder, rules, extraProps }, i) =>
-          type === "checkbox" ? (
-            <Form.Item name={name} valuePropName="checked" key={i}>
-              <div
-                style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}
-              >
-                <Checkbox style={{ ...extraProps }}>{label}</Checkbox>
-              </div>
-            </Form.Item>
-          ) : (
-            <Form.Item name={name} rules={rules} key={i}>
-              {type === "password" ? (
-                <Input.Password
-                  {...extraProps}
-                  type={type}
-                  placeholder={placeholder}
-                  size={extraProps ? extraProps.size || "large" : "large"}
-                />
-              ) : (
-                <Input
-                  {...extraProps}
-                  type={type}
-                  placeholder={placeholder}
-                  size={extraProps ? extraProps.size || "large" : "large"}
-                />
-              )}
-            </Form.Item>
-          )
+        fields.map(
+          (
+            { label, name, type, placeholder, rules, extraProps, onChange },
+            i
+          ) =>
+            type === "checkbox" ? (
+              <Form.Item name={name} valuePropName="checked" key={i}>
+                <div
+                  style={{
+                    display: "flex",
+                    flex: 1,
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Checkbox style={{ ...extraProps }} onChange={onChange}>
+                    {label}
+                  </Checkbox>
+                </div>
+              </Form.Item>
+            ) : (
+              <Form.Item name={name} rules={rules} key={i}>
+                {type === "password" ? (
+                  <Input.Password
+                    {...extraProps}
+                    type={type}
+                    placeholder={placeholder}
+                    size={extraProps ? extraProps.size || "large" : "large"}
+                  />
+                ) : (
+                  <Input
+                    {...extraProps}
+                    type={type}
+                    placeholder={placeholder}
+                    size={extraProps ? extraProps.size || "large" : "large"}
+                  />
+                )}
+              </Form.Item>
+            )
         )}
 
       {buttons &&

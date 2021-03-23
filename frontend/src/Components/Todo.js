@@ -32,8 +32,10 @@ const Todo = ({
   onTaskToggle,
 }) => {
   const { name, tasks, tags } = todo;
+
   const [completedTodoPercentage, setCompletedPercentage] = useState(0);
   const [showMore, setShowMore] = useState(false);
+  const [subMenuVisible, setSubmenuVisible] = useState(false);
 
   useEffect(() => {
     const pct = Math.round(
@@ -55,7 +57,10 @@ const Todo = ({
           <Button
             type="text"
             style={{ width: "100%" }}
-            onClick={() => onDelete(todo)}
+            onClick={() => {
+              onDelete(todo);
+              setSubmenuVisible(false);
+            }}
           >
             <Text type="danger" style={{ width: "100%", textAlign: "left" }}>
               Delete
@@ -78,11 +83,12 @@ const Todo = ({
             placement="bottom"
             content={<HoverSubmenu />}
             trigger="click"
+            visible={subMenuVisible}
           >
             <EllipsisOutlined
               key="ellipsis"
               onClick={() => {
-                console.log("more");
+                setSubmenuVisible(!subMenuVisible);
               }}
             />
           </Popover>,

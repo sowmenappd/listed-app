@@ -13,6 +13,7 @@
 
 #taur build files
 /frontend/src-tauri/target/
+/frontend/src-tauri/*.file
 
 # misc
 .DS_Store

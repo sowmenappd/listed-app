@@ -4,7 +4,7 @@ import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 import rules from "../Config/FormRules";
 
-const LoginForm = ({ onBack, onSubmit, onResponse }) => {
+const LoginForm = ({ onBack, onSubmit, onResponse, onRemember }) => {
   const formFields = [
     {
       name: "username",
@@ -32,12 +32,17 @@ const LoginForm = ({ onBack, onSubmit, onResponse }) => {
         fontSize: 20,
         marginTop: -20,
       },
+      onChange: ({ target: { checked } }) => {
+        console.log(checked);
+        onRemember?.(checked);
+      },
     },
   ];
   const buttons = [
     {
       color: "blueviolet",
       htmlType: "submit",
+      onClick: () => {},
       shape: "round",
       style: {
         marginTop: 50,
@@ -51,9 +56,7 @@ const LoginForm = ({ onBack, onSubmit, onResponse }) => {
     {
       color: "darkmagenta",
       htmlType: "button",
-      onClick: () => {
-        console.log("forgot password");
-      },
+      onClick: () => {},
       shape: "round",
       textStyle: {
         fontWeight: "bold",

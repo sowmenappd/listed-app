@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 import { Button, Divider, Empty, Select, Timeline, Typography } from "antd";
-import { PlusSquareOutlined } from "@ant-design/icons";
+import { FileAddOutlined } from "@ant-design/icons";
 import { Collapse } from "antd";
 import { Input } from "antd";
 
@@ -19,16 +19,16 @@ const Header = () => (
     }}
     ellipsis
   >
-    <PlusSquareOutlined
+    <FileAddOutlined
       style={{
         marginRight: 8,
       }}
     />
-    Add new todo
+    Add new list
   </Title>
 );
 
-const AddTodoNav = ({
+const AddListNav = ({
   collections,
   tasks,
   onTodoAdd,
@@ -44,6 +44,7 @@ const AddTodoNav = ({
   const [currentCollection, setCurrentCollection] = useState("Default");
 
   const defTags = useMemo(() => ["important", "home", "work", "personal"], []);
+  const selectRef = useRef();
 
   return (
     <Collapse
@@ -61,18 +62,18 @@ const AddTodoNav = ({
         <div
           style={{
             overflowY: "auto",
+            maxHeight: "350pt",
           }}
         >
           <Title level={4}>Title</Title>
           <Input
-            placeholder="New todo"
+            placeholder="New list"
             allowClear
             value={currentTodoTitle}
             onChange={(e) => {
               setCurrentTodoTitle(e.target.value);
             }}
           />
-
           <Select
             mode="tags"
             style={{ width: "70%", marginTop: 8 }}
@@ -84,13 +85,15 @@ const AddTodoNav = ({
               }));
               setCurrentTags(_tags);
             }}
+            allowClear
             tokenSeparators={[","]}
+            ref={selectRef}
+            value={currentTags.map(({ name }) => name)}
           >
             {defTags.map((tag) => (
               <Select.Option key={tag}>{tag}</Select.Option>
             ))}
           </Select>
-
           <Select
             placeholder="Select collection"
             bordered={false}
@@ -107,7 +110,7 @@ const AddTodoNav = ({
               ))}
           </Select>
           <Divider />
-          <Title level={4}>Tasks</Title>
+          <Title level={4}>Items</Title>
           <Input
             placeholder="Buy groceries, call mom, .."
             allowClear
@@ -116,14 +119,16 @@ const AddTodoNav = ({
               setCurrentTaskTitle(e.target.value);
             }}
             onPressEnter={() => {
-              onTaskAdd(currentTask);
-              setCurrentTaskTitle("");
+              if (currentTask && currentTask.length > 0) {
+                onTaskAdd(currentTask);
+                setCurrentTaskTitle("");
+              }
             }}
           />
           <Divider>
             {tasks.length === 0 && <Empty description="No tasks yet" />}
           </Divider>
-          <div style={{ overflowY: "auto", maxHeight: 150 }}>
+          <div>
             <AddTodoTasks
               tasks={tasks}
               onTaskDelete={(i) => {
@@ -133,11 +138,12 @@ const AddTodoNav = ({
             />
             {tasks.length ? (
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button onClick={onTaskListClear}>Clear list</Button>
+                <Button shape="round" onClick={onTaskListClear}>
+                  Clear list
+                </Button>
               </div>
             ) : null}
           </div>
-
           <Collapse
             style={{
               borderWidth: 0,
@@ -162,9 +168,10 @@ const AddTodoNav = ({
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               type="primary"
-              style={{ marginBottom: 10 }}
+              style={{ marginBottom: 10, marginRight: 10 }}
               disabled={busy}
               loading={busy}
+              shape="round"
               onClick={() => {
                 if (!tasks.length) return;
                 const todoObj = {
@@ -178,6 +185,7 @@ const AddTodoNav = ({
                 onTodoAdd?.(todoObj);
                 setCurrentTodoTitle("");
                 setCurrentTags([]);
+                console.log(Object.keys(selectRef.current));
               }}
             >
               Add
@@ -219,4 +227,4 @@ const AddTodoTasks = ({ tasks, onTaskDelete }) => {
   );
 };
 
-export default AddTodoNav;
+export default AddListNav;

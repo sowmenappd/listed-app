@@ -1,11 +1,11 @@
 import React from "react";
 import { Avatar, Button, Card, Col, Row, Typography } from "antd";
-import { SettingOutlined, LogoutOutlined } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 
 import SearchBar from "../Components/SearchBar";
 import AddCollectionNav from "../Components/AddCollectionNav";
 import TodoCollectionNav from "../Components/TodoCollectionNav";
-import AddTodoNav from "../Components/AddTodoNav";
+import AddListNav from "../Components/AddTodoNav";
 
 const { Text } = Typography;
 
@@ -54,7 +54,7 @@ const LeftScreen = ({
       <Row>
         <div style={{ zIndex: 2, width: "100%" }}>
           <ContextColumn marginTop={40}>
-            <AddTodoNav
+            <AddListNav
               busy={addingTodoActivity}
               collections={collections}
               onTodoAdd={onTodoAdd}
@@ -75,7 +75,7 @@ const LeftScreen = ({
           paddingLeft: 20,
           paddingRight: 20,
           paddingBottom: 16,
-          position: "absolute",
+          position: "fixed",
           bottom: 0,
           zIndex: 1,
           backgroundColor: "#fafaff",
@@ -90,32 +90,37 @@ const LeftScreen = ({
             flex: 1,
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between",
+            position: "relative",
           }}
         >
           <Card.Meta
             avatar={
-              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+              <Avatar
+                style={{
+                  backgroundColor: "#87d068",
+                  marginTop: 10,
+                }}
+                icon={<UserOutlined />}
+              />
             }
             title={<Text ellipsis={{ symbol: "..." }}>{user.username}</Text>}
-            description={<Text ellipsis={{ symbol: "..." }}>{user._id}</Text>}
+            description={
+              <Text ellipsis={{ symbol: "..." }} type="secondary">
+                <i>
+                  {user._id.substring(user._id.length - 6, user._id.length - 1)}
+                </i>
+              </Text>
+            }
             style={{ width: "100%" }}
           />
-          <div
-            style={{
-              paddingRight: 5,
-              display: "flex",
-            }}
-          >
-            <Button type="link" onClick={() => {}}>
-              <SettingOutlined key="settings" style={{ fontSize: 20 }} />
-            </Button>
+          <div>
             <Button
               type="link"
               danger
               onClick={() => {
                 onLogout?.("");
               }}
+              style={{ width: "100%", height: "100%", textAlign: "right" }}
             >
               <LogoutOutlined key="logout" style={{ fontSize: 20 }} />
             </Button>

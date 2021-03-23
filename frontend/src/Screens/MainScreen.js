@@ -320,7 +320,7 @@ const MainScreen = ({ user, onLogout }) => {
   return (
     <div>
       <Row style={{ height: "100vh" }}>
-        <Col style={{ backgroundColor: "#191716" }} span={6}>
+        <Col style={{ backgroundColor: "#191716" }} span={7}>
           <LeftScreen
             addingTodoActivity={addingActivity}
             collections={collections}
@@ -345,7 +345,7 @@ const MainScreen = ({ user, onLogout }) => {
             user={user}
           />
         </Col>
-        <Col style={{ backgroundColor: "#fafaff" }} span={18}>
+        <Col style={{ backgroundColor: "#fafaff" }} span={17}>
           <RightScreen
             collections={collections}
             loadingTodos={loadingTodos}
@@ -381,13 +381,15 @@ const MainScreen = ({ user, onLogout }) => {
                 } catch (ex) {
                   console.log(ex.message);
                 }
-                notification.error({
-                  message: "Todo update failed.",
-                  description: "Please try again.",
-                });
+                if (b === false) {
+                  notification.error({
+                    message: "Todo update failed.",
+                    description: "Please try again.",
+                  });
+                }
               };
               handler();
-            } else {
+            } else if (b === true) {
               setCurrentTodo(null);
               notification.success({
                 message: "Todo updated successfully.",

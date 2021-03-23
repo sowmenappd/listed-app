@@ -9,7 +9,7 @@ import WelcomeAnimation from "../Components/WelcomeAnimation";
 
 import config from "../config";
 
-const AuthScreen = ({ onToken }) => {
+const AuthScreen = ({ onToken, onRemember }) => {
   const cRef = useRef(null);
   const [page, setPage] = useState("login");
   const handleNavigation = (page, delay = false) => {
@@ -30,9 +30,10 @@ const AuthScreen = ({ onToken }) => {
 
       if (token !== null) {
         if (values.rememberMe === true) {
-          localStorage.setItem("token", token);
+          onRemember?.(true);
         }
         onToken?.(token);
+        onRemember?.(false);
         return true;
       }
     } catch (ex) {
@@ -63,9 +64,7 @@ const AuthScreen = ({ onToken }) => {
       } = await axios.post(`${config.apiBaseUrl}/auth/signup`, values);
 
       if (token !== null) {
-        if (values.rememberMe === true) {
-          localStorage.setItem("token", token);
-        }
+        onRemember?.(values.rememberMe === true);
         onToken?.(token);
         return true;
       }

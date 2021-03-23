@@ -57,7 +57,7 @@ const EditTodoModal = ({
   };
 
   const handleCancel = () => {
-    onUpdated?.(false);
+    onUpdated?.(null);
   };
 
   return (
