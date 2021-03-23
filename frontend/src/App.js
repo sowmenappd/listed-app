@@ -45,7 +45,7 @@ const App = () => {
   const handleToken = (t) => {
     setToken(t);
 
-    if (remember) {
+    if (remember && t !== null) {
       let str = JSON.stringify({ token: t });
       fs.writeBinaryFile({
         path: "./dat.file",
@@ -53,6 +53,8 @@ const App = () => {
       }).catch((err) => {
         console.log(err);
       });
+    } else if (t === "") {
+      fs.removeFile("./dat.file");
     }
   };
 

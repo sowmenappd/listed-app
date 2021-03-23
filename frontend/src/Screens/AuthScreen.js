@@ -1,13 +1,26 @@
 import axios from "axios";
+import { open } from "tauri/api/window";
 import React, { useRef, useState } from "react";
-import { Col, notification, Row } from "antd";
+import { Button, Col, Divider, notification, Row, Typography } from "antd";
 import Logo from "../Components/Logo";
+
+import {
+  GithubFilled,
+  FacebookFilled,
+  InstagramFilled,
+} from "@ant-design/icons";
 
 import LoginComponent from "../Components/LoginComponent";
 import RegisterComponent from "../Components/RegisterComponent";
 import WelcomeAnimation from "../Components/WelcomeAnimation";
 
 import config from "../config";
+
+const { Text } = Typography;
+
+const GITHUB_URL = "https://github.com/sowmenappd";
+const FACEBOOK_URL = "https://facebook.com/sowmen.rahman.01";
+const INSTAGRAM_URL = "https://www.instagram.com/sowmen.r1/";
 
 const AuthScreen = ({ onToken, onRemember }) => {
   const cRef = useRef(null);
@@ -113,6 +126,54 @@ const AuthScreen = ({ onToken, onRemember }) => {
                 onBackPressed={handleNavigation}
               />
             )}
+          </div>
+          <div
+            style={{
+              bottom: 20,
+              position: "absolute",
+              width: 200,
+              height: 60,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                flexDirection: "row",
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                paddingBottom: 20,
+              }}
+            >
+              <Button
+                type="link"
+                style={{ fontSize: 24, color: "blueviolet" }}
+                onClick={() => open(GITHUB_URL)}
+              >
+                <GithubFilled size={40} />
+              </Button>
+              <Button
+                type="link"
+                style={{ fontSize: 24, color: "blueviolet" }}
+                onClick={() => open(FACEBOOK_URL)}
+              >
+                <FacebookFilled />
+              </Button>
+              <Button
+                type="link"
+                style={{ fontSize: 24, color: "blueviolet" }}
+                onClick={() => open(INSTAGRAM_URL)}
+              >
+                <InstagramFilled />
+              </Button>
+            </div>
+            <Text strong style={{ color: "white", fontSize: 16 }}>
+              Sowmen Rahman © 2021
+            </Text>
           </div>
         </Col>
         <Col {...layoutProps("#fafaff")}>
