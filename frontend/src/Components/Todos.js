@@ -82,7 +82,7 @@ const Todos = ({
         </Col>
       </Row>
       <Row>
-        {todos && todos.length > 0 ? (
+        {!loading && todos && todos.length > 0 ? (
           <List
             style={{
               overflowX: "hidden",

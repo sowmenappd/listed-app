@@ -9,25 +9,41 @@ import AuthScreen from "./Screens/AuthScreen";
 
 const App = () => {
   const [remember, setRemember] = useState(false);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (token !== "" && token.length > 10) {
-      axios.interceptors.request.use(
-        (config) => {
-          config.headers.Authorization = `Bearer ${token}`;
-          return config;
-        },
-        (error) => Promise.reject(error)
-      );
-      const _u = jwt.decode(token, process.env.REACT_APP_SRV_SECRET);
-      if (_u) {
-        setUser(_u);
+    const handler = async () => {
+      if (token && token.length > 10) {
+        axios.interceptors.request.use(
+          (config) => {
+            config.headers.Authorization = `Bearer ${token}`;
+            return config;
+          },
+          (error) => Promise.reject(error)
+        );
+        const _u = jwt.decode(token, process.env.REACT_APP_SRV_SECRET);
+        if (_u) {
+          if (remember) {
+            let str = JSON.stringify({ token: token });
+            await fs
+              .writeBinaryFile({
+                path: "./dat.file",
+                contents: new TextEncoder().encode(str),
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          setUser(_u);
+        }
+      } else {
+        if (token === "") await fs.removeFile("./dat.file");
+        setUser(null);
       }
-    } else {
-      setUser(null);
-    }
+    };
+
+    handler();
   }, [token]);
 
   useEffect(() => {
@@ -44,18 +60,6 @@ const App = () => {
 
   const handleToken = (t) => {
     setToken(t);
-
-    if (remember && t !== null) {
-      let str = JSON.stringify({ token: t });
-      fs.writeBinaryFile({
-        path: "./dat.file",
-        contents: new TextEncoder().encode(str),
-      }).catch((err) => {
-        console.log(err);
-      });
-    } else if (t === "") {
-      fs.removeFile("./dat.file");
-    }
   };
 
   return (

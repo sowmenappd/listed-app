@@ -60,18 +60,28 @@ export const deleteTodo = async (req, res) => {
 
 export const searchTodos = async (req, res) => {
   const { q, userId } = req.query;
-  console.log(q);
 
-  const regex = new RegExp(".*" + q + ".*", "i");
+  let regex;
+
+  let parts = q.split(" ");
+  if (parts.length < 2) {
+    regex = new RegExp(".*" + q + ".*", "i");
+  } else {
+    let mPattern = "";
+    for (let part of parts) {
+      mPattern += ".*" + part;
+    }
+    mPattern += ".*";
+
+    regex = new RegExp(mPattern, "i");
+  }
 
   const todos = await Todo.find({ userId })
-    // .where()
     .or([
       { name: { $regex: regex } },
       { tags: { $elemMatch: { name: regex } } },
     ])
     .select();
-  console.log(todos);
 
   res.status(200).json(todos);
 };

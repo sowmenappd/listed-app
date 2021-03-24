@@ -14,7 +14,6 @@ const { apiBaseUrl } = config;
 
 const MainScreen = ({ user, onLogout }) => {
   const [todos, setTodos] = useState([]);
-  const [searchTodos, setSearchTodos] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [collections, setCollections] = useState([{ name: "All", _id: "" }]);
   const [selectedCollection, setSelectedCollection] = useState("");
@@ -71,26 +70,27 @@ const MainScreen = ({ user, onLogout }) => {
   const [addingActivity, setAddingActiviyState] = useState(false);
   const [loadingTodos, setLoadingTodos] = useState(true);
 
+  const getTodos = async () => {
+    setTodos([]);
+    setLoadingTodos(true);
+
+    const userId = user._id;
+    if (!userId) return;
+
+    let _todos;
+    if (selectedCollection) {
+      _todos = await axios.get(
+        `${apiBaseUrl}/todos?collectionId=${selectedCollection}`
+      );
+    } else {
+      _todos = await axios.get(`${apiBaseUrl}/todos?userId=${userId}`);
+    }
+
+    setTodos(_todos.data);
+    setLoadingTodos(false);
+  };
+
   useEffect(() => {
-    const getTodos = async () => {
-      setTodos([]);
-      setLoadingTodos(true);
-
-      const userId = user._id;
-      if (!userId) return;
-
-      let _todos;
-      if (selectedCollection) {
-        _todos = await axios.get(
-          `${apiBaseUrl}/todos?collectionId=${selectedCollection}`
-        );
-      } else {
-        _todos = await axios.get(`${apiBaseUrl}/todos?userId=${userId}`);
-      }
-
-      setTodos(_todos.data);
-      setLoadingTodos(false);
-    };
     if (!changeCollectionTodo) getTodos();
   }, [selectedCollection, changeCollectionTodo, user._id]);
 
@@ -149,9 +149,9 @@ const MainScreen = ({ user, onLogout }) => {
   const handleSearch = async (term) => {
     // console.log("Search:", term);
     if (!term || term.length < 2) {
+      await getTodos();
       setIsSearching(false);
       setLoadingTodos(false);
-      setTodos(todos);
       return;
     }
 
@@ -162,7 +162,7 @@ const MainScreen = ({ user, onLogout }) => {
     const result = await axios.post(
       `${apiBaseUrl}/todos/search?q=${term}&userId=${userId}`
     );
-    setSearchTodos(result.data);
+    setTodos(result.data);
     setLoadingTodos(false);
   };
 
@@ -368,7 +368,7 @@ const MainScreen = ({ user, onLogout }) => {
             onUpdateTag={handleTagUpdate}
             onUpdateTodo={handleTodoUpdate}
             selectedCollection={selectedCollection}
-            todos={isSearching ? searchTodos : todos}
+            todos={todos}
             user={user}
           />
         </Col>
