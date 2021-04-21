@@ -5,9 +5,6 @@
 /.pnp
 .pnp.js
 
-# backend admin scripts
-py-scripts/
-
 # testing
 /frontend/coverage
 
@@ -20,6 +17,8 @@ py-scripts/
 
 # misc
 .DS_Store
+**/__pycache__
+**/.env
 **/.env.local
 **/.env.dev*
 **/.env.test*
