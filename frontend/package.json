@@ -1,5 +1,5 @@
 {
-  "name": "listed-app",
+  "name": "listed-app-frontend",
   "version": "1.2.0",
   "private": true,
   "dependencies": {
