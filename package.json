@@ -11,6 +11,7 @@
     "backend:test": "NODE_ENV=\"test\" npm start --prefix backend",
     "start:test": "concurrently \"npm run frontend:test\" \"npm run backend:test\"",
     "frontend:prod": "env-cmd -f frontend/.env.prod npm run tauri build --prefix frontend",
+    "frontend:prod2": "env-cmd -f frontend/.env.prod npm run build --prefix frontend",
     "backend:prod": "env-cmd -f backend/.env.prod npm start --prefix backend"
   },
   "repository": {
