@@ -13,7 +13,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.listed-app.sowmenrahman",
+      "identifier": "com.sowmenrahman.listed-app",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -25,7 +25,7 @@
       "externalBin": [],
       "copyright": "",
       "category": "DeveloperTool",
-      "shortDescription": "",
+      "shortDescription": "An app to create and manage your lists",
       "longDescription": "",
       "deb": {
         "depends": [],
@@ -44,8 +44,8 @@
     "window": {
       "title": "Listed",
       "width": 1366,
-      "height": 900,
-      "resizable": false,
+      "height": 768,
+      "resizable": true,
       "fullscreen": false
     },
     "security": {
