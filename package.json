@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sowmenappd/todo-app.git"
+    "url": "git+https://github.com/sowmenappd/listed-app.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sowmenappd/todo-app/issues"
+    "url": "https://github.com/sowmenappd/listed-app/issues"
   },
-  "homepage": "https://github.com/sowmenappd/todo-app#readme",
+  "homepage": "https://github.com/sowmenappd/listed-app#readme",
   "description": "",
   "devDependencies": {
     "concurrently": "^6.0.0"
