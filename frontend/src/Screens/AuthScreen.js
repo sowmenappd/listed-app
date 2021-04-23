@@ -117,7 +117,7 @@ const AuthScreen = ({ onToken, onRemember }) => {
               alignItems: "center",
             }}
           >
-            {!(screensX.sm || screensX.xs) && <Logo />}
+            {!displaySecond && <Logo />}
             {page === "login" ? (
               <LoginComponent
                 onSubmit={handleLogin}
@@ -186,13 +186,15 @@ const AuthScreen = ({ onToken, onRemember }) => {
             <div
               style={{
                 position: "fixed",
-                top: 80,
+                top: 160,
                 paddingLeft: 30,
+                display: "flex",
               }}
             >
               <Logo />
             </div>
-            <WelcomeAnimation carouselRef={cRef} />
+
+            <WelcomeAnimation carouselRef={cRef} marginTop={140} />
           </Col>
         )}
       </Row>

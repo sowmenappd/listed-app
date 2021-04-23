@@ -3,17 +3,16 @@ import { Typography } from "antd";
 
 const { Title, Text } = Typography;
 
-const Logo = () => {
+const Logo = ({ marginBottom = 0 }) => {
   return (
     <>
       <Title
         level={1}
-        title="todo"
         style={{
           color: "#191716",
           float: "right",
           fontSize: 72,
-          padding: 20,
+          marginBottom: marginBottom,
           fontWeight: "bolder",
         }}
       >

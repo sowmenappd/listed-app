@@ -7,7 +7,7 @@ import register from "../Animations/register.json";
 
 const { Text } = Typography;
 
-const WelcomeAnimation = ({ carouselRef }) => {
+const WelcomeAnimation = ({ carouselRef, marginTop = 0 }) => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -27,7 +27,7 @@ const WelcomeAnimation = ({ carouselRef }) => {
   };
 
   return (
-    <div style={{ width: "80%" }}>
+    <div style={{ width: "80%", marginTop }}>
       <Carousel ref={carouselRef} dots={false}>
         <div>
           <Lottie options={defaultOptions} style={{ marginTop: 20 }} />
