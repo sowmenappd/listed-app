@@ -15,6 +15,7 @@ import RegisterComponent from "../Components/RegisterComponent";
 import WelcomeAnimation from "../Components/WelcomeAnimation";
 
 import config from "../config";
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 
 const { Text } = Typography;
 
@@ -25,6 +26,10 @@ const INSTAGRAM_URL = "https://www.instagram.com/sowmen.r1/";
 const AuthScreen = ({ onToken, onRemember }) => {
   const cRef = useRef(null);
   const [page, setPage] = useState("login");
+  const screensX = useBreakpoint();
+
+  const displaySecond = screensX.xl || screensX.xll;
+
   const handleNavigation = (page, delay = false) => {
     setPage(page);
     const handler = () => cRef.current.goTo(page === "login" ? 0 : 1);
@@ -104,15 +109,15 @@ const AuthScreen = ({ onToken, onRemember }) => {
   return (
     <div>
       <Row style={{ height: "100vh" }}>
-        <Col {...layoutProps("#191716")}>
+        <Col {...layoutProps("#191716")} span={displaySecond ? 12 : 24}>
           <div
             style={{
-              position: "fixed",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
+            {!(screensX.sm || screensX.xs) && <Logo />}
             {page === "login" ? (
               <LoginComponent
                 onSubmit={handleLogin}
@@ -176,18 +181,20 @@ const AuthScreen = ({ onToken, onRemember }) => {
             </Text>
           </div>
         </Col>
-        <Col {...layoutProps("#fafaff")}>
-          <div
-            style={{
-              position: "fixed",
-              top: 80,
-              paddingLeft: 30,
-            }}
-          >
-            <Logo />
-          </div>
-          <WelcomeAnimation carouselRef={cRef} />
-        </Col>
+        {displaySecond && (
+          <Col {...layoutProps("#fafaff")} span={displaySecond ? 12 : 0}>
+            <div
+              style={{
+                position: "fixed",
+                top: 80,
+                paddingLeft: 30,
+              }}
+            >
+              <Logo />
+            </div>
+            <WelcomeAnimation carouselRef={cRef} />
+          </Col>
+        )}
       </Row>
     </div>
   );
@@ -204,7 +211,6 @@ const layoutProps = (bgColor) => {
       alignItems: "center",
       backgroundColor: bgColor || "transparent",
     },
-    span: 12,
   };
 };
 
